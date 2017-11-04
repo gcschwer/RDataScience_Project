@@ -1,12 +1,23 @@
 ---
-title: "I have the best titles"
-author: Your name here
-subtitle: Subtitle here if desired
+title: "Dilineating Sub-Watersheds of the Finger Lakes Region, NY"
+author: Gillian Schwert
+subtitle: Topographical and Land-Use Diversity of the Finger Lakes
 ---
 
 # Introduction
-My really awesome and complete introduction will go here.  
+Cyanobacteria, or blue-green algae, are actually a type of photosynthetic prokaryotes (Wiegand et al., 2005) that are capable of producing myriad types of secondary metabolites, many of which have been identified as strong cyanotoxins (Blaha et al., 2009). These cyanotoxins can be classified into five categories, including hepatotoxins (affecting the liver), neurotoxins (affecting the brain), cytotoxins (affecting cells), dermatotoxins (affecting the skin), and irritant toxins (Wiegand et al., 2005). With the most extreme cases of exposure ending in death, having an understanding of the factors that contribute to cyanobacterial vigor is incredibly important in protecting the health of people living near affected waters.
 
+One important factor that has led to an increase in the observation of cyanobacterial bloom is the widespread increase in anthropogenic eutrophication, a state of excessive nutrient load in a waterbody caused largely by human land use practices (Blaha et al., 2009). As agriculture and urbanization expand, the increase of land impermeability coupled with the increase in nutrient-rich lands leads to an increased amount of surface runoff. This surface runoff carries nutrients from the land to the water, leading to these eutrophic conditions that favor excessive plant and algae growth. According to a 1999 estimate by Bartram et al., over 40% of lakes and reservoirs have become eutrophic, presenting ideal conditions for widespread cyanobacterial bloom. An updated proportion would most assuredly be much higher almost twenty years later.
+
+In addition to the increase in anthropogenic eutrophication, global climate change also plays a large part in the increased burden of cyanobacterial bloom (Blaha et al., 2009). To put it simply, when the weather is hot and calm and nutrient levels are high, more widespread cyanobacterial bloom is expected (NYSDEC, 2017). These cyanobacterial preferences are troubling since scientists widely agree that temperatures will continue to increase for decades to come due to the anthropogenic production of greenhouse gases that have made themselves at home in the atmosphere (NASA, 2017). Forecasted temperatures demonstrate a probable increase in temperature by 2.5 to 10 degrees Fahrenheit in the next century, offering ideal conditions for cyanobacteria to thrive (NASA, 2017).
+
+In New York State, citizens and government bodies understand all too well how cyanobacteria are finding increased amount of success in water bodies across the state. The New York State Department of Environmental Conservation has a webpage dedicated to the monitoring of harmful algal blooms, relying on information gathered from the DEC Lake Classification and Inventory Program, the Citizen Statewide Lake Assessment Program volunteers, and public reports using the Suspicious Algal Bloom Report form (NYSDEC, 2017). According to the archived data from 2012-2016, suspicious blooms increased from 19 to 41, confirmed blooms increased from 29 to 95, and highly toxic blooms increased from 9 to 37 (NYSDEC HAB Program Archive Summary, 2016).
+
+The Finger Lakes represent 11 of of New York State's monitored water bodies, all near to one another in geogrpahical space and yet all impacted to varying degrees by cyanobacteria.
+```{r}
+library(gdata)
+LakeData=read.xls(Lake_Summary1.xlsx,sheet=1,verbose=F,blank.lines.skip=T,perl="perl")
+```
 > I know words.  I have the best words.  ~ Donald Trump
 
 # Materials and methods
