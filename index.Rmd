@@ -13,16 +13,17 @@ In addition to the increase in anthropogenic eutrophication, global climate chan
 
 In New York State, citizens and government bodies understand all too well how cyanobacteria are finding increased amount of success in water bodies across the state. The New York State Department of Environmental Conservation has a webpage dedicated to the monitoring of harmful algal blooms, relying on information gathered from the DEC Lake Classification and Inventory Program, the Citizen Statewide Lake Assessment Program volunteers, and public reports using the Suspicious Algal Bloom Report form (NYSDEC, 2017). According to the archived data from 2012-2016, suspicious blooms increased from 19 to 41, confirmed blooms increased from 29 to 95, and highly toxic blooms increased from 9 to 37 (NYSDEC HAB Program Archive Summary, 2016).
 
-The Finger Lakes represent 11 of of New York State's monitored water bodies, all near to one another in geogrpahical space and yet all impacted to varying degrees by cyanobacteria.
+The Finger Lakes represent 11 of of New York State's monitored water bodies, all near to one another in geographical space and yet all impacted to varying degrees by cyanobacteria.
 ```{r}
-library(gdata)
-LakeData=read.xls(Lake_Summary1.xlsx,sheet=1,verbose=F,blank.lines.skip=T,perl="perl")
+library(readr)
+Lake_Summary_1 <- read_csv("C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/Lake_Summary_1.csv")
+View(Lake_Summary_1)
 ```
-> I know words.  I have the best words.  ~ Donald Trump
+So if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? For this project, we will seek to answer that question by looking into land use. Specifically, this project will seek to quantify the proportion of each lake's watershed that can be categorized as agricultural land. It is hypothesized that lakes with a higher proportion of agricultural land will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom.
 
 # Materials and methods
 
-Narrative and most code will go here.  Describe what you are doing and show how to do it (with code).
+In order to quantify the ratio of agricultural land for each lake's watershed, we first have to dilineate the boundaries between the lakes' watersheds.
 
 You can do bullets like this:
 
