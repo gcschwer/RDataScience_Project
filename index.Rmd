@@ -41,8 +41,8 @@ datadir='C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data
 USA=getData('GADM',country='USA',level=0,path=datadir)
 dem_FL=getData('alt',country='USA',lat=42.72,lon=-77.05,path=datadir,download=T)
 dem_cont_USA=dem_FL$`C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data/USA1_msk_alt.grd`
-dem_roa=crop(dem_cont_USA,extent(-79,-75,41,44),filename=file.path(datadir,"dem_flr.tif"),overwrite=T)
-plot(dem_roa)
+dem_roi=crop(dem_cont_USA,extent(-79,-75,41,44),filename=file.path(datadir,"dem_flr.tif"),overwrite=T)
+plot(dem_roi)
 ```
 
 Load any required packages in a code chunk (you may need to install some packages):
