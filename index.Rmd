@@ -19,6 +19,7 @@ library(readr)
 Lake_Summary_1 <- read_csv("C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/Lake_Summary_1.csv")
 View(Lake_Summary_1)
 Lake_Summary_1
+
 ```
 So if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? For this project, we will seek to answer that question by looking into land use. Specifically, this project will seek to quantify the proportion of each lake's watershed that can be categorized as agricultural land. It is hypothesized that lakes with a higher proportion of agricultural land will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom.
 
