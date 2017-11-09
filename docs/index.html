@@ -327,7 +327,25 @@ Lake_Summary_1 &lt;- read_csv(&quot;C:/Users/gills/Desktop/Geo503_R/FinalProject
 ##   `Bloom 2015 (wks)` = col_integer(),
 ##   `Bloom 2016 (wks)` = col_integer()
 ## )</code></pre>
-<pre class="r"><code>View(Lake_Summary_1)</code></pre>
+<pre class="r"><code>View(Lake_Summary_1)
+Lake_Summary_1</code></pre>
+<pre><code>## # A tibble: 11 x 12
+##           Lake Latitude Longitude `Elevation (ft)` `Surface_Area (acres)`
+##          &lt;chr&gt;    &lt;dbl&gt;     &lt;dbl&gt;            &lt;int&gt;                  &lt;int&gt;
+##  1     Conesus 42.73453 -77.71143              818                   3420
+##  2     Hemlock 42.72561 -77.60900              905                   1800
+##  3    Canadice 42.71722 -77.56891             1096                    649
+##  4     Honeoye 42.75426 -77.51157              804                   1772
+##  5 Canandaigua 42.77811 -77.30500              688                  10558
+##  6       Keuka 42.49328 -77.14060              715                  11584
+##  7      Seneca 42.61286 -76.91828              445                  43343
+##  8      Cayuga 42.58171 -76.63492              381                  42956
+##  9      Owasco 42.83420 -76.51012              712                   6665
+## 10 Skaneateles 42.86064 -76.36411              863                   8960
+## 11      Otisco 42.86668 -76.28495              787                   1877
+## # ... with 7 more variables: `Max Depth (ft)` &lt;int&gt;, Class &lt;chr&gt;, `Bloom
+## #   2012 (wks)` &lt;int&gt;, `Bloom 2013 (wks)` &lt;int&gt;, `Bloom 2014 (wks)` &lt;int&gt;,
+## #   `Bloom 2015 (wks)` &lt;int&gt;, `Bloom 2016 (wks)` &lt;int&gt;</code></pre>
 <p>So if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? For this project, we will seek to answer that question by looking into land use. Specifically, this project will seek to quantify the proportion of each lake’s watershed that can be categorized as agricultural land. It is hypothesized that lakes with a higher proportion of agricultural land will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom.</p>
 </div>
 <div id="materials-and-methods" class="section level1">
