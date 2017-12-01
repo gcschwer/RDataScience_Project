@@ -64,16 +64,11 @@ plot(Slope)
 Aspect=terrain(x=dem_roi,opt='aspect',unit='degrees',neighbors=8)
 plot(Aspect)
 ```
-This can take a few seconds.
+
+
 
 ```{r, fig.width=6, fig.height=3, fig.cap="Map illustrating the known occurrence locations"}
-# Load coastline
-map=map_data("world")
 
-ggplot(d,aes(x=longitude,y=latitude))+
-  geom_polygon(aes(x=long,y=lat,group=group),data=map)+
-  geom_point(col="red")+
-  coord_equal()
 ```
 
 
@@ -82,7 +77,7 @@ ggplot(d,aes(x=longitude,y=latitude))+
 Show tables, plots, etc. and describe them.
 
 ```{r}
-summary(d)
+
 ```
 
 # Conclusions
