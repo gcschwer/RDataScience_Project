@@ -53,13 +53,16 @@ dem_roi=crop(dem_cont_USA,extent(-79,-75,41,44),filename=file.path(datadir,"dem_
 plot(dem_roi)
 ```
 
-Now that we have our DEM data for our region of interest around the 11 Finger Lakes, we can call on rgrass7 to attempt to identify the boundaries between each lake's watershed.
-
+Now that we have our DEM data for our region of interest around the 11 Finger Lakes, we can use the raster package to analyze terrain details like slope, aspect, and flow direction as the preliminary steps to identifying the boundaries between each of the 11 Finger Lakes.
 
 
 ```{r, warning=F} 
-terrain(x = dem_roi,opt = 'flowdir',unit = 'degrees',neighbors = 8,filename = 'data/FlowDir')
-
+FlowDir=terrain(x = dem_roi,opt = 'flowdir',unit = 'degrees',neighbors = 8)
+plot(FlowDir)
+Slope=terrain(x=dem_roi,opt='slope',unit='degrees',neighbors=8)
+plot(Slope)
+Aspect=terrain(x=dem_roi,opt='aspect',unit='degrees',neighbors=8)
+plot(Aspect)
 ```
 This can take a few seconds.
 
