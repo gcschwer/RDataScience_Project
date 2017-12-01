@@ -13,7 +13,7 @@ In addition to the increase in anthropogenic eutrophication, global climate chan
 
 In New York State, citizens and government bodies understand all too well how cyanobacteria are finding increased amount of success in water bodies across the state. The New York State Department of Environmental Conservation has a webpage dedicated to the monitoring of harmful algal blooms, relying on information gathered from the DEC Lake Classification and Inventory Program, the Citizen Statewide Lake Assessment Program volunteers, and public reports using the Suspicious Algal Bloom Report form (NYSDEC, 2017). According to the archived data from 2012-2016, suspicious blooms increased from 19 to 41, confirmed blooms increased from 29 to 95, and highly toxic blooms increased from 9 to 37 (NYSDEC HAB Program Archive Summary, 2016).
 
-The Finger Lakes represent 11 of of New York State's monitored water bodies, all near to one another in geographical space and yet all impacted to varying degrees by cyanobacteria.
+The Finger Lakes represent 11 of of New York State's monitored water bodies, all near to one another in geographical space and yet all impacted to varying degrees by cyanobacteria. The table below shows how many weeks per year that harmful algal blooms were detected by the NYS Department of Environmental Conservation:
 ```{r}
 library(readr)
 library(DT)
