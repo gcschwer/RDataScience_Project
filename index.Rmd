@@ -17,8 +17,10 @@ The Finger Lakes represent 11 of of New York State's monitored water bodies, all
 ```{r}
 library(readr)
 library(DT)
-lakedata=read.table(file = 'Lake_Summary_1.csv',skip=1,sep=",",col.names = c('Lake','Latitude','Longitude','Elevation','SurfaceArea','MaxDepth','Class','BloomWks12','BloomWks13','BloomWks14','BloomWks15','BloomsWks16'))
-datatable(lakedata, options = list(pageLength = 5))
+lakedata=read.table(file = 'data/BloomWks_2.csv',skip=1,sep=',',col.names=c('Lake','BlmWk12','BlmWk13','BlmWk14','BlmWk15','BlmWk16'),nrows=11)
+BlmWk17=c(8,0,0,14,4,6,5,10,10,5,2)
+lakedata2017=cbind(lakedata,BlmWk17)
+datatable(lakedata2017, options = list(pageLength = 5))
 ```
 
 So if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? For this project, we will seek to answer that question by looking into land use. Specifically, this project will seek to quantify the proportion of each lake's watershed that can be categorized as agricultural land. It is hypothesized that lakes with a higher proportion of agricultural land will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom.
