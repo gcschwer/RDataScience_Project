@@ -94,16 +94,20 @@ plot(Aspect)
 plot(FlowDir)
 ```
 
-```{r, fig.width=6, fig.height=3, fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
+```{r, fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
 watersheds=readOGR(dsn='FL_polygons.shp')
 plot(watersheds)
 ```
 
-```{r, fig.width=6, fig.height=3, fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
+```{r, fig.cap="Land Use Clsasification: Finger Lakes Region, NY"}
 class=load.image(file = '23Apr17_Classif.jpg')
 plot(class)
 ```
-
+Red = Bare Land
+Blue = Water
+Cyan = Urban
+Green = Forest
+Yellow = Agriculture
 # Conclusions
 
 What have you learned?  Are there any broader implications?

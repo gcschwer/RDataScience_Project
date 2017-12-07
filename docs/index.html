@@ -313,7 +313,7 @@ div.tocify {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>Cyanobacteria, or blue-green algae, are actually a type of photosynthetic prokaryotes (Wiegand et al., 2005) that are capable of producing myriad types of secondary metabolites, many of which have been identified as strong cyanotoxins (Blaha et al., 2009). These cyanotoxins can be classified into five categories, including hepatotoxins (affecting the liver), neurotoxins (affecting the brain), cytotoxins (affecting cells), dermatotoxins (affecting the skin), and irritant toxins (Wiegand et al., 2005). With the most extreme cases of exposure ending in death, having an understanding of the factors that contribute to cyanobacterial vigor is incredibly important in protecting the health of people living near affected waters.</p>
-<p>One important factor that has led to an increase in the observation of cyanobacterial bloom is the widespread increase in anthropogenic eutrophication, a state of excessive nutrient load in a waterbody caused largely by human land use practices (Blaha et al., 2009). As agriculture and urbanization expand, the increase of land impermeability coupled with the increase in nutrient-rich lands leads to an increased amount of surface runoff. This surface runoff carries nutrients from the land to the water, leading to these eutrophic conditions that favor excessive plant and algae growth. According to a 1999 estimate by Bartram et al., over 40% of lakes and reservoirs have become eutrophic, presenting ideal conditions for widespread cyanobacterial bloom. An updated proportion would most assuredly be much higher almost twenty years later.</p>
+<p>One important factor that has led to an increase in the observation of cyanobacterial bloom is the widespread increase in anthropogenic eutrophication, a state of excessive nutrient load in a water body caused largely by human land use practices (Blaha et al., 2009). As agriculture and urbanization expand, the increase of land impermeability coupled with the increase in nutrient-rich lands leads to an increased amount of surface runoff. This surface runoff carries nutrients from the land to the water, leading to these eutrophic conditions that favor excessive plant and algae growth. According to a 1999 estimate by Bartram et al., over 40% of lakes and reservoirs have become eutrophic, presenting ideal conditions for widespread cyanobacterial bloom. An updated proportion would most assuredly be much higher almost twenty years later.</p>
 <p>In addition to the increase in anthropogenic eutrophication, global climate change also plays a large part in the increased burden of cyanobacterial bloom (Blaha et al., 2009). To put it simply, when the weather is hot and calm and nutrient levels are high, more widespread cyanobacterial bloom is expected (NYSDEC, 2017). These cyanobacterial preferences are troubling since scientists widely agree that temperatures will continue to increase for decades to come due to the anthropogenic production of greenhouse gases that have made themselves at home in the atmosphere (NASA, 2017). Forecasted temperatures demonstrate a probable increase in temperature by 2.5 to 10 degrees Fahrenheit in the next century, offering ideal conditions for cyanobacteria to thrive (NASA, 2017).</p>
 <p>In New York State, citizens and government bodies understand all too well how cyanobacteria are finding increased amount of success in water bodies across the state. The New York State Department of Environmental Conservation has a webpage dedicated to the monitoring of harmful algal blooms, relying on information gathered from the DEC Lake Classification and Inventory Program, the Citizen Statewide Lake Assessment Program volunteers, and public reports using the Suspicious Algal Bloom Report form (NYSDEC, 2017). According to the archived data from 2012-2016, suspicious blooms increased from 19 to 41, confirmed blooms increased from 29 to 95, and highly toxic blooms increased from 9 to 37 (NYSDEC HAB Program Archive Summary, 2016).</p>
 <p>The Finger Lakes represent 11 of of New York State’s monitored water bodies, all near to one another in geographical space and yet all impacted to varying degrees by cyanobacteria. The table below shows how many weeks per year that harmful algal blooms were detected by the NYS Department of Environmental Conservation:</p>
@@ -323,55 +323,90 @@ lakedata=read.table(file = &#39;data/BloomWks_2.csv&#39;,skip=1,sep=&#39;,&#39;,
 BlmWk17=c(8,0,0,14,4,6,5,10,10,5,2)
 lakedata2017=cbind(lakedata,BlmWk17)
 datatable(lakedata2017, options = list(pageLength = 5))</code></pre>
-<div id="htmlwidget-b595dbd996bee396b795" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-b595dbd996bee396b795">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-1e400336e0e7d83ca15f" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1e400336e0e7d83ca15f">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p>From this table, we can clearly see that some of the Finger Lakes experience more weeks of bloom than other lakes. We can also clearly see that many of the lakes never had recorded blooms actually experienced recorded blooms in 2017, a troubling sign.</p>
 <p>These data beg a few questions: 1) if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? 2) What might be the possible explanation for increasing bloom records across all lakes?</p>
 <p>For this project, we will seek to answer these questions by looking into land use. Specifically, this project will seek to quantify the proportion of each lake’s watershed that can be categorized as agricultural land. It is hypothesized that lakes with a higher proportion of agricultural land will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom.In addition, if land use has changed or is changing, perhaps this could be an indication of why blooms are becoming more widespread across all lakes.</p>
 </div>
 <div id="materials-and-methods" class="section level1">
 <h1>Materials and methods</h1>
-<p>In order to quantify the ratio of agricultural land for each lake’s watershed, we first have to dilineate the boundaries between the lakes’ watersheds.</p>
-<p>We’re going to use the ‘rgrass7’ package in order to call on the GRASS program from within R. In this way, we can use the watershed tools already built into GRASS in order to help with the watershed delineation.</p>
-<p>The data we will use to perform this watershed delineation are 1 arc-second DEM data that can be freely downloaded by anyone from USGS’ National Map database.</p>
+<p>In order to quantify the ratio of agricultural land for each lake’s watershed, we first have to delineate the boundaries between the lakes’ watersheds.</p>
+<p>Originally, we were going to use the ‘rgrass7’ package in order to call on the GRASS program from within R. In this way, we could theoretically use the watershed tools already built into GRASS in order to help with the watershed delineation. The problem, however, is in the learning curve. The process within GRASS is already somewhat complicated, so the attempt to translate into the R environment was extra complicated, especially since there was little literature for how it should be done. Instead, the watershed delineation was calculated strictly within GRASS.</p>
+<p>The data used to perform this watershed delineation are 1 arc-second DEM data that can be freely downloaded by anyone from USGS’ National Map database.</p>
 <p>First let’s find the elevation data that we need!</p>
 <pre class="r"><code>library(sp)
 library(raster)
-library(rgdal)</code></pre>
-<pre><code>## rgdal: version: 1.2-8, (SVN revision 663)
-##  Geospatial Data Abstraction Library extensions to R successfully loaded
-##  Loaded GDAL runtime: GDAL 2.0.1, released 2015/09/15
-##  Path to GDAL shared files: C:/Users/gills/Documents/R/win-library/3.4/rgdal/gdal
-##  Loaded PROJ.4 runtime: Rel. 4.9.2, 08 September 2015, [PJ_VERSION: 492]
-##  Path to PROJ.4 shared files: C:/Users/gills/Documents/R/win-library/3.4/rgdal/proj
-##  Linking to sp version: 1.2-5</code></pre>
-<pre class="r"><code>library(XML)
-library(RArcInfo)</code></pre>
-<pre><code>## Loading required package: RColorBrewer</code></pre>
-<pre class="r"><code>library(rgrass7)</code></pre>
-<pre><code>## GRASS GIS interface loaded with GRASS version: (GRASS not running)</code></pre>
-<pre class="r"><code>datadir=&#39;C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data&#39;
+library(rgdal)
+library(XML)
+library(RArcInfo)
+library(imager)
+datadir=&#39;C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data&#39;
 USA=getData(&#39;GADM&#39;,country=&#39;USA&#39;,level=0,path=datadir)
-dem_FL=getData(&#39;alt&#39;,country=&#39;USA&#39;,lat=42.72,lon=-77.05,path=datadir,download=T)</code></pre>
-<pre><code>## returning a list of RasterLayer objects</code></pre>
-<pre class="r"><code>dem_cont_USA=dem_FL$`C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data/USA1_msk_alt.grd`
-dem_roi=crop(dem_cont_USA,extent(-79,-75,41,44),filename=file.path(datadir,&quot;dem_flr.tif&quot;),overwrite=T)
-plot(dem_roi)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-2-1.png" width="672" /></p>
-<p>Now that we have our DEM data for our region of interest around the 11 Finger Lakes, we can use the raster package to analyze terrain details like slope, aspect, and flow direction as the preliminary steps to identifying the boundaries between each of the 11 Finger Lakes.</p>
+dem_FL=getData(&#39;alt&#39;,country=&#39;USA&#39;,lat=42.72,lon=-77.05,path=datadir,download=T)
+dem_cont_USA=dem_FL$`C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data/USA1_msk_alt.grd`
+dem_roi=crop(dem_cont_USA,extent(-79,-75,41,44),filename=file.path(datadir,&quot;dem_flr.tif&quot;),overwrite=T)</code></pre>
+<p>After narrowing down our DEM data for our region of interest around the 11 Finger Lakes, we can use the raster package to analyze terrain details like slope, aspect, and flow direction as the preliminary steps to identifying the boundaries between each of the 11 Finger Lakes.</p>
 <pre class="r"><code>FlowDir=terrain(x = dem_roi,opt = &#39;flowdir&#39;,unit = &#39;degrees&#39;,neighbors = 8)
-plot(FlowDir)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-3-1.png" width="672" /></p>
-<pre class="r"><code>Slope=terrain(x=dem_roi,opt=&#39;slope&#39;,unit=&#39;degrees&#39;,neighbors=8)
-plot(Slope)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-3-2.png" width="672" /></p>
-<pre class="r"><code>Aspect=terrain(x=dem_roi,opt=&#39;aspect&#39;,unit=&#39;degrees&#39;,neighbors=8)
-plot(Aspect)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-3-3.png" width="672" /></p>
+
+Slope=terrain(x=dem_roi,opt=&#39;slope&#39;,unit=&#39;degrees&#39;,neighbors=8)
+
+Aspect=terrain(x=dem_roi,opt=&#39;aspect&#39;,unit=&#39;degrees&#39;,neighbors=8)</code></pre>
+<p>These calculations within R have given us a good idea of how the terrain behaves in the Finger Lakes Region and thus where we’d expect water to flow. For the actual watershed delineation, however, we’ll turn it over to GRASS!</p>
+<p>Once GRASS helps us identify watershed boundaries, however, we’ll need a land use map for the Finger Lakes Region. This can be found freely online through the National Land Cover Database (NLCD) or you can create a land use map of your own using remote sensing software such as ENVI. Since I did this for another class, I’ll bring in my own work here and we can do a data overlay to calculate land use proportions for each lake.</p>
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
 <p>Show tables, plots, etc. and describe them.</p>
+<pre class="r"><code>plot(dem_roi)</code></pre>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-4-1.png" alt="DEM for Finger Lakes Region" width="672" />
+<p class="caption">
+DEM for Finger Lakes Region
+</p>
+</div>
+<pre class="r"><code>plot(Slope)</code></pre>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-5-1.png" alt="Slope for Finger Lakes Region" width="672" />
+<p class="caption">
+Slope for Finger Lakes Region
+</p>
+</div>
+<pre class="r"><code>plot(Aspect)</code></pre>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-6-1.png" alt="Aspect for Finger Lakes Region" width="672" />
+<p class="caption">
+Aspect for Finger Lakes Region
+</p>
+</div>
+<pre class="r"><code>plot(FlowDir)</code></pre>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-7-1.png" alt="Flow Direction for Finger Lakes Region" width="672" />
+<p class="caption">
+Flow Direction for Finger Lakes Region
+</p>
+</div>
+<pre class="r"><code>watersheds=readOGR(dsn=&#39;FL_polygons.shp&#39;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;FL_polygons.shp&quot;, layer: &quot;FL_polygons&quot;
+## with 11 features
+## It has 2 fields
+## Integer64 fields read as strings:  Area</code></pre>
+<pre class="r"><code>plot(watersheds)</code></pre>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-8-1.png" alt="Watershed Boundaries: Finger Lakes Region, NY" width="576" />
+<p class="caption">
+Watershed Boundaries: Finger Lakes Region, NY
+</p>
+</div>
+<pre class="r"><code>class=load.image(file = &#39;23Apr17_Classif.jpg&#39;)
+plot(class)</code></pre>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-9-1.png" alt="Watershed Boundaries: Finger Lakes Region, NY" width="576" />
+<p class="caption">
+Watershed Boundaries: Finger Lakes Region, NY
+</p>
+</div>
 </div>
 <div id="conclusions" class="section level1">
 <h1>Conclusions</h1>
