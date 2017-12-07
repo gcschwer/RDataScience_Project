@@ -323,8 +323,8 @@ lakedata=read.table(file = &#39;data/BloomWks_2.csv&#39;,skip=1,sep=&#39;,&#39;,
 BlmWk17=c(8,0,0,14,4,6,5,10,10,5,2)
 lakedata2017=cbind(lakedata,BlmWk17)
 datatable(lakedata2017, options = list(pageLength = 5))</code></pre>
-<div id="htmlwidget-f2ba0c2ec5de1b21b6d1" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-f2ba0c2ec5de1b21b6d1">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-e012fd17d37f33fff401" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-e012fd17d37f33fff401">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p>From this table, we can clearly see that some of the Finger Lakes experience more weeks of bloom than other lakes. We can also clearly see that many of the lakes never had recorded blooms actually experienced recorded blooms in 2017, a troubling sign.</p>
 <p>These data beg a few questions: 1) if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? 2) What might be the possible explanation for increasing bloom records across all lakes?</p>
 <p>For this project, we will seek to answer these questions by looking into land use. Specifically, this project will seek to quantify the proportion of each lake’s watershed that can be categorized as agricultural land. It is hypothesized that lakes with a higher proportion of agricultural land will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom.In addition, if land use has changed or is changing, perhaps this could be an indication of why blooms are becoming more widespread across all lakes.</p>
@@ -341,6 +341,7 @@ library(rgdal)
 library(XML)
 library(RArcInfo)
 library(imager)
+library(sf)
 datadir=&#39;C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data&#39;
 USA=getData(&#39;GADM&#39;,country=&#39;USA&#39;,level=0,path=datadir)
 dem_FL=getData(&#39;alt&#39;,country=&#39;USA&#39;,lat=42.72,lon=-77.05,path=datadir,download=T)
@@ -399,10 +400,26 @@ Flow Direction for Finger Lakes Region
 Watershed Boundaries: Finger Lakes Region, NY
 </p>
 </div>
+<pre class="r"><code>watersheds_proj=readOGR(dsn=&#39;data/FL_polygons.shp&#39;)</code></pre>
+<pre><code>## OGR data source with driver: ESRI Shapefile 
+## Source: &quot;data/FL_polygons.shp&quot;, layer: &quot;FL_polygons&quot;
+## with 11 features
+## It has 2 fields
+## Integer64 fields read as strings:  Area</code></pre>
+<pre class="r"><code>DEM_proj=raster(x = &#39;data/dem_flr_proj.tif&#39;)
+DEM_proj_crop=crop(DEM_proj,extent(250000,420000,4650000,4800000),filename=file.path(datadir,&quot;DEM_crop.tif&quot;),overwrite=T)
+plot(DEM_proj_crop)
+plot(watersheds_proj, add=T)</code></pre>
+<div class="figure">
+<img src="index_files/figure-html/unnamed-chunk-9-1.png" alt="Overlaying Watershed BOundaries over DEM" width="672" />
+<p class="caption">
+Overlaying Watershed BOundaries over DEM
+</p>
+</div>
 <pre class="r"><code>class=load.image(file = &#39;23Apr17_Classif.jpg&#39;)
 plot(class)</code></pre>
 <div class="figure">
-<img src="index_files/figure-html/unnamed-chunk-9-1.png" alt="Land Use Clsasification: Finger Lakes Region, NY" width="672" />
+<img src="index_files/figure-html/unnamed-chunk-10-1.png" alt="Land Use Clsasification: Finger Lakes Region, NY" width="672" />
 <p class="caption">
 Land Use Clsasification: Finger Lakes Region, NY
 </p>
