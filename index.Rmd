@@ -103,7 +103,8 @@ plot(watersheds)
 ```{r, warning=F, message=F,fig.cap="Overlaying Watershed BOundaries over DEM"}
 watersheds_proj=readOGR(dsn='data/FL_polygons.shp')
 DEM_proj=raster(x = 'data/dem_flr_proj.tif')
-plot(DEM_proj)
+DEM_proj_crop=crop(DEM_proj,extent(250000,420000,4650000,4800000),filename=file.path(datadir,"DEM_crop.tif"),overwrite=T)
+plot(DEM_proj_crop)
 plot(watersheds_proj, add=T)
 ```
 
