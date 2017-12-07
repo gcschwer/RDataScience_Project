@@ -7,7 +7,7 @@ subtitle: Topographical and Land-Use Diversity of the Finger Lakes
 # Introduction
 Cyanobacteria, or blue-green algae, are actually a type of photosynthetic prokaryotes (Wiegand et al., 2005) that are capable of producing myriad types of secondary metabolites, many of which have been identified as strong cyanotoxins (Blaha et al., 2009). These cyanotoxins can be classified into five categories, including hepatotoxins (affecting the liver), neurotoxins (affecting the brain), cytotoxins (affecting cells), dermatotoxins (affecting the skin), and irritant toxins (Wiegand et al., 2005). With the most extreme cases of exposure ending in death, having an understanding of the factors that contribute to cyanobacterial vigor is incredibly important in protecting the health of people living near affected waters.
 
-One important factor that has led to an increase in the observation of cyanobacterial bloom is the widespread increase in anthropogenic eutrophication, a state of excessive nutrient load in a waterbody caused largely by human land use practices (Blaha et al., 2009). As agriculture and urbanization expand, the increase of land impermeability coupled with the increase in nutrient-rich lands leads to an increased amount of surface runoff. This surface runoff carries nutrients from the land to the water, leading to these eutrophic conditions that favor excessive plant and algae growth. According to a 1999 estimate by Bartram et al., over 40% of lakes and reservoirs have become eutrophic, presenting ideal conditions for widespread cyanobacterial bloom. An updated proportion would most assuredly be much higher almost twenty years later.
+One important factor that has led to an increase in the observation of cyanobacterial bloom is the widespread increase in anthropogenic eutrophication, a state of excessive nutrient load in a water body caused largely by human land use practices (Blaha et al., 2009). As agriculture and urbanization expand, the increase of land impermeability coupled with the increase in nutrient-rich lands leads to an increased amount of surface runoff. This surface runoff carries nutrients from the land to the water, leading to these eutrophic conditions that favor excessive plant and algae growth. According to a 1999 estimate by Bartram et al., over 40% of lakes and reservoirs have become eutrophic, presenting ideal conditions for widespread cyanobacterial bloom. An updated proportion would most assuredly be much higher almost twenty years later.
 
 In addition to the increase in anthropogenic eutrophication, global climate change also plays a large part in the increased burden of cyanobacterial bloom (Blaha et al., 2009). To put it simply, when the weather is hot and calm and nutrient levels are high, more widespread cyanobacterial bloom is expected (NYSDEC, 2017). These cyanobacterial preferences are troubling since scientists widely agree that temperatures will continue to increase for decades to come due to the anthropogenic production of greenhouse gases that have made themselves at home in the atmosphere (NASA, 2017). Forecasted temperatures demonstrate a probable increase in temperature by 2.5 to 10 degrees Fahrenheit in the next century, offering ideal conditions for cyanobacteria to thrive (NASA, 2017).
 
@@ -31,11 +31,11 @@ For this project, we will seek to answer these questions by looking into land us
 
 # Materials and methods
 
-In order to quantify the ratio of agricultural land for each lake's watershed, we first have to dilineate the boundaries between the lakes' watersheds.
+In order to quantify the ratio of agricultural land for each lake's watershed, we first have to delineate the boundaries between the lakes' watersheds.
 
-We're going to use the 'rgrass7' package in order to call on the GRASS program from within R. In this way, we can use the watershed tools already built into GRASS in order to help with the watershed delineation.
+Originally, we were going to use the 'rgrass7' package in order to call on the GRASS program from within R. In this way, we could theoretically use the watershed tools already built into GRASS in order to help with the watershed delineation. The problem, however, is in the learning curve. The process within GRASS is already somewhat complicated, so the attempt to translate into the R environment was extra complicated, especially since there was little literature for how it should be done. Instead, the watershed delineation was calculated strictly within GRASS.
 
-The data we will use to perform this watershed delineation are 1 arc-second DEM data that can be freely downloaded by anyone from USGS' National Map database.
+The data used to perform this watershed delineation are 1 arc-second DEM data that can be freely downloaded by anyone from USGS' National Map database.
 
 First let's find the elevation data that we need!
 ```{r,warning=F, message=F}
@@ -44,40 +44,64 @@ library(raster)
 library(rgdal)
 library(XML)
 library(RArcInfo)
-library(rgrass7)
+library(imager)
 datadir='C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data'
 USA=getData('GADM',country='USA',level=0,path=datadir)
 dem_FL=getData('alt',country='USA',lat=42.72,lon=-77.05,path=datadir,download=T)
 dem_cont_USA=dem_FL$`C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data/USA1_msk_alt.grd`
 dem_roi=crop(dem_cont_USA,extent(-79,-75,41,44),filename=file.path(datadir,"dem_flr.tif"),overwrite=T)
-plot(dem_roi)
+
 ```
 
-Now that we have our DEM data for our region of interest around the 11 Finger Lakes, we can use the raster package to analyze terrain details like slope, aspect, and flow direction as the preliminary steps to identifying the boundaries between each of the 11 Finger Lakes.
+After narrowing down our DEM data for our region of interest around the 11 Finger Lakes, we can use the raster package to analyze terrain details like slope, aspect, and flow direction as the preliminary steps to identifying the boundaries between each of the 11 Finger Lakes.
 
 
 ```{r, warning=F, message=F} 
 FlowDir=terrain(x = dem_roi,opt = 'flowdir',unit = 'degrees',neighbors = 8)
-plot(FlowDir)
+
 Slope=terrain(x=dem_roi,opt='slope',unit='degrees',neighbors=8)
-plot(Slope)
+
 Aspect=terrain(x=dem_roi,opt='aspect',unit='degrees',neighbors=8)
-plot(Aspect)
-```
-
-
-
-```{r, fig.width=6, fig.height=3, fig.cap="Map illustrating the known occurrence locations"}
 
 ```
+
+These calculations within R have given us a good idea of how the terrain behaves in the Finger Lakes Region and thus where we'd expect water to flow. For the actual watershed delineation, however, we'll turn it over to GRASS!
+
+Once GRASS helps us identify watershed boundaries, however, we'll need a land use map for the Finger Lakes Region. This can be found freely online through the National Land Cover Database (NLCD) or you can create a land use map of your own using remote sensing software such as ENVI. Since I did this for another class, I'll bring in my own work here and we can do a data overlay to calculate land use proportions for each lake.
 
 
 # Results
 
 Show tables, plots, etc. and describe them.
 
-```{r}
+```{r, warning=F, message=F, fig.cap='DEM for Finger Lakes Region'}
 
+plot(dem_roi)
+```
+
+```{r, warning=F, message=F, fig.cap='Slope for Finger Lakes Region'}
+
+plot(Slope)
+```
+
+```{r, warning=F, message=F, fig.cap='Aspect for Finger Lakes Region'}
+
+plot(Aspect)
+```
+
+```{r, warning=F, message=F, fig.cap='Flow Direction for Finger Lakes Region'}
+
+plot(FlowDir)
+```
+
+```{r, fig.width=6, fig.height=3, fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
+watersheds=readOGR(dsn='FL_polygons.shp')
+plot(watersheds)
+```
+
+```{r, fig.width=6, fig.height=3, fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
+class=load.image(file = '23Apr17_Classif.jpg')
+plot(class)
 ```
 
 # Conclusions
