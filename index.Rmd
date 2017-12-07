@@ -45,6 +45,7 @@ library(rgdal)
 library(XML)
 library(RArcInfo)
 library(imager)
+library(sf)
 datadir='C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data'
 USA=getData('GADM',country='USA',level=0,path=datadir)
 dem_FL=getData('alt',country='USA',lat=42.72,lon=-77.05,path=datadir,download=T)
@@ -98,6 +99,14 @@ plot(FlowDir)
 watersheds=readOGR(dsn='FL_polygons.shp')
 plot(watersheds)
 ```
+
+```{r, warning=F, message=F,fig.cap="Overlaying Watershed BOundaries over DEM"}
+watersheds_proj=readOGR(dsn='data/FL_polygons.shp')
+DEM_proj=raster(x = 'data/dem_flr_proj.tif')
+plot(DEM_proj)
+plot(watersheds_proj, add=T)
+```
+
 
 ```{r, fig.cap="Land Use Clsasification: Finger Lakes Region, NY"}
 class=load.image(file = '23Apr17_Classif.jpg')
