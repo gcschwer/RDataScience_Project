@@ -323,8 +323,8 @@ lakedata=read.table(file = &#39;data/BloomWks_2.csv&#39;,skip=1,sep=&#39;,&#39;,
 BlmWk17=c(8,0,0,14,4,6,5,10,10,5,2)
 lakedata2017=cbind(lakedata,BlmWk17)
 datatable(lakedata2017, options = list(pageLength = 5))</code></pre>
-<div id="htmlwidget-3f4225c947c2ea7e4a48" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-3f4225c947c2ea7e4a48">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-bbab36a560b7b416628e" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-bbab36a560b7b416628e">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":5,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[5,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p>From this table, we can clearly see that some of the Finger Lakes experience more weeks of bloom than other lakes. We can also clearly see that many of the lakes never had recorded blooms actually experienced recorded blooms in 2017, a troubling sign.</p>
 <p>These data beg a few questions: 1) if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? 2) What might be the possible explanation for increasing bloom records across all lakes?</p>
 <p>For this project, we will seek to answer these questions by looking into land use. Specifically, this project will seek to quantify the proportion of each lake’s watershed that can be categorized as agricultural land. It is hypothesized that lakes with a higher proportion of agricultural land will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom.In addition, if land use has changed or is changing, perhaps this could be an indication of why blooms are becoming more widespread across all lakes.</p>
@@ -342,6 +342,7 @@ library(XML)
 library(RArcInfo)
 library(imager)
 library(sf)
+library(gridExtra)
 datadir=&#39;C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data&#39;
 USA=getData(&#39;GADM&#39;,country=&#39;USA&#39;,level=0,path=datadir)
 dem_FL=getData(&#39;alt&#39;,country=&#39;USA&#39;,lat=42.72,lon=-77.05,path=datadir,download=T)
@@ -358,6 +359,9 @@ Aspect=terrain(x=dem_roi,opt=&#39;aspect&#39;,unit=&#39;degrees&#39;,neighbors=8
 </div>
 <div id="results" class="section level1">
 <h1>Results</h1>
+</div>
+<div id="basic-terrain-analysis" class="section level1">
+<h1>Basic Terrain Analysis</h1>
 <pre class="r"><code>plot(dem_roi)</code></pre>
 <div class="figure">
 <img src="index_files/figure-html/unnamed-chunk-4-1.png" alt="DEM for Finger Lakes Region" width="672" />
@@ -381,7 +385,7 @@ Slope for Finger Lakes Region
 Aspect for Finger Lakes Region
 </p>
 </div>
-<p>The above plot demonstrates the aspect of the land in the Finger Lakes Region. Since aspect informs about the compass direction any given slope faces, understanding the aspect of the terrain is also an important cosideration in trying to understand how water might move through the watershed.</p>
+<p>The above plot demonstrates the aspect of the land in the Finger Lakes Region. Since aspect informs about the compass direction any given slope faces, understanding the aspect of the terrain is also an important consideration in trying to understand how water might move through the watershed.</p>
 <pre class="r"><code>plot(FlowDir)</code></pre>
 <div class="figure">
 <img src="index_files/figure-html/unnamed-chunk-7-1.png" alt="Flow Direction for Finger Lakes Region" width="672" />
@@ -389,7 +393,7 @@ Aspect for Finger Lakes Region
 Flow Direction for Finger Lakes Region
 </p>
 </div>
-<p>This plot demonstrates the flow direction within the region of interest. The legend for this parameter goes up to 128. These legend values are not necessarily intuitive. To understand, think of water falling into a pixel. If the water does not stay in that pixel, it can go one of eight directions, to one of the eight surrounding pixels. Each pixel can be represented by a number. The numerical scale of the legend can then be understood as follows: East : 2^0 = 1 Southeast : 2^1 = 2 South : 2^2 = 4 Southwest : 2^3 = 8 West : 2^4 = 16 Northwest : 2^5 = 32 North : 2^6 = 64 Northeast : 2^7 = 128</p>
+<p>This plot demonstrates the flow direction within the region of interest. The legend for this parameter goes up to 128. These legend values are not necessarily intuitive. To understand, think of water falling into a pixel. If the water does not stay in that pixel, it can go one of eight directions, to one of the eight surrounding pixels. Each pixel can be represented by a number. The numerical scale of the legend can then be understood as follows: East : 2^0 = 1 Southeast : 2^1 = 2 South : 2^2 = 4 Southwest : 2^3 = 8 West : 2^4 = 16 Northwest : 2^5 = 32 North : 2^6 = 64 Northeast : 2^7 = 128 ## Loading Watershed BOundaries into R from GRASS</p>
 <pre class="r"><code>watersheds=readOGR(dsn=&#39;FL_polygons.shp&#39;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;FL_polygons.shp&quot;, layer: &quot;FL_polygons&quot;
@@ -403,7 +407,7 @@ Flow Direction for Finger Lakes Region
 Watershed Boundaries: Finger Lakes Region, NY
 </p>
 </div>
-<p>Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS’s watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS Gui in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above.</p>
+<p>Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS’s watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS GUI in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above.</p>
 <pre class="r"><code>watersheds_proj=readOGR(dsn=&#39;data/FL_polygons.shp&#39;)</code></pre>
 <pre><code>## OGR data source with driver: ESRI Shapefile 
 ## Source: &quot;data/FL_polygons.shp&quot;, layer: &quot;FL_polygons&quot;
@@ -421,7 +425,7 @@ Overlaying Watershed Boundaries over DEM
 </p>
 </div>
 <p>Here, we can see how the watershed boundaries fit nicely onto the DEM from earlier in a way that makes sense visually. Boundaries fall on what appear to be local high points between the lakes.</p>
-<p>The reluctance of R to be useful in the watershed delineation process, however, turned out to be useful. Instead of the focus of this project being on watershed delineation, we can take it a step further in order to understand more about the land use within the watersheds.</p>
+<p>The reluctance of R to be useful in the watershed delineation process, however, turned out to be useful. Instead of the focus of this project being on watershed delineation, we can take it a step further in order to understand more about the land use within the watersheds. ## Land Use Classification Data via Analysis of Landsat 8 Image</p>
 <pre class="r"><code>landuse=raster(x=&#39;data/Class2017_2&#39;)
 plot(landuse)</code></pre>
 <div class="figure">
@@ -444,9 +448,9 @@ plot(conf_mat)</code></pre>
 Land Use Classification derived from a Landsat 8 OLI Image from April 23, 2017
 </p>
 </div>
-<p>The above map was created by me in ENVI for another class. I used an image from Landsat 8 OLI on April 23, 2017. The image was downloaded from USGS’s National Map. The image was preprocessed and then a supervised classification was run on the image. In the classification map above, various colors represent different types of land use. In the above image, the colors signify: Yellow - Agriculture Green - Forest Red - Bare Land Blue - Water Light blue - Urban</p>
+<p>The above map was created by me in ENVI. I used an image from Landsat 8 OLI captured on April 23, 2017 that was downloaded from USGS’s National Map. The image was preprocessed and then a supervised classification was run on the image. In the classification map above, various colors represent different types of land use. In the above image, the colors signify: Yellow - Agriculture Green - Forest Red - Bare Land Blue - Water Light blue - Urban</p>
 <p>While this land use map is in no way perfect, validation of the classification did indicate a high accuracy of classification. Using training samples collected from higher spatial resolution imagery, a confusion matrix was constructed and demonstrates an overall accuracy of 98.246%. This lends some confidence to the classification results, supporting its usefulness in the watershed analysis.</p>
-<p>Now that we have both a watershed shapefile and a land use map, we can do some interesting overlay analysis.</p>
+<p>Now that we have both a watershed shapefile and a land use map, we can do some interesting overlay analysis. ## Watershed / Land Use Overlay Analysis</p>
 <pre class="r"><code>plot(landuse)</code></pre>
 <div class="figure">
 <img src="index_files/figure-html/unnamed-chunk-11-1.png" alt="Overlaying Watershed Boundaries over Land Use Classification Map" width="672" />
@@ -461,7 +465,7 @@ Overlaying Watershed Boundaries over Land Use Classification Map
 Overlaying Watershed Boundaries over Land Use Classification Map
 </p>
 </div>
-<p>In the above map, we can see how the land use varies between watersheds. There is clearly and issue at the bottom of the land use map where the boundary of the original landsat image did not extend to the full reach of two of the central Finger Lakes. This should and will be addressed in future land use classification analysis by overlaying two adjacent landsat images.</p>
+<p>In the above map, we can see how the land use varies between watersheds. There is clearly and issue at the bottom of the land use map where the boundary of the original Landsat image did not extend to the full reach of two of the central Finger Lakes. This should and will be addressed in future land use classification analysis by overlaying two adjacent Landsat images.</p>
 <p>For the purposes of this project, however, we can still do our analysis, simply keeping in mind that the information we have for lakes 5 and 6, Keuka Lake and Seneca Lake, are incomplete.</p>
 <pre class="r"><code>conesus=watersheds_proj[watersheds_proj$Name==&#39;Conesus&#39;,]
 otisco=watersheds_proj[watersheds_proj$Name==&#39;Otisco&#39;,]
@@ -552,6 +556,7 @@ Separating the Watersheds from Multipolygon
 Separating the Watersheds from Multipolygon
 </p>
 </div>
+<pre class="r"><code>par(mfrow=c(3,4))</code></pre>
 <p>In the above, we break the multipolygon representing the watersheds into separate polygons for each lake’s watershed. This will make it simpler to analyze land use within each separate watershed.</p>
 <pre class="r"><code># Conesus Lake
 landuse_conesus=crop(landuse, conesus)
@@ -586,29 +591,32 @@ mask_canadice=mask(landuse_canadice,canadice)
 #Hemlock Lake
 landuse_hemlock=crop(landuse, hemlock)
 mask_hemlock=mask(landuse_hemlock,hemlock)
-par(mfrow=c(3,4))
+
 #Plotting all 11 watershed/landuse overlays
-plot(mask_conesus,main=&#39;Conesus Watershed Land Use&#39;)
-plot(mask_otisco,main=&#39;Otisco Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="672" /></p>
+plot(mask_conesus,main=&#39;Conesus Watershed Land Use&#39;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-13-1.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<pre class="r"><code>plot(mask_otisco,main=&#39;Otisco Watershed Land Use&#39;)</code></pre>
+<p><img src="index_files/figure-html/unnamed-chunk-13-3.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-4.png" width="672" /></p>
 <pre class="r"><code>plot(mask_skaneateles,main=&#39;Skaneateles Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-2.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-5.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-6.png" width="672" /></p>
 <pre class="r"><code>plot(mask_honeoye,main=&#39;Honeoye Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-3.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-7.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-8.png" width="672" /></p>
 <pre class="r"><code>plot(mask_canandaigua,main=&#39;Canandaigua Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-4.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-9.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-10.png" width="672" /></p>
 <pre class="r"><code>plot(mask_owasco,main=&#39;Owasco Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-5.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-11.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-12.png" width="672" /></p>
 <pre class="r"><code>plot(mask_cayuga,main=&#39;Cayuga Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-6.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-13.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-14.png" width="672" /></p>
 <pre class="r"><code>plot(mask_seneca,main=&#39;Seneca Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-7.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-15.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-16.png" width="672" /></p>
 <pre class="r"><code>plot(mask_keuka,main=&#39;Keuka Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-8.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-17.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-18.png" width="672" /></p>
 <pre class="r"><code>plot(mask_canadice,main=&#39;Canadice Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-9.png" width="672" /></p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-19.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-20.png" width="672" /></p>
 <pre class="r"><code>plot(mask_hemlock,main=&#39;Hemlock Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-13-10.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-11.png" width="672" /> Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others.</p>
+<p><img src="index_files/figure-html/unnamed-chunk-13-21.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-13-22.png" width="672" /></p>
+<pre class="r"><code>par(mfrow=c(3,4))</code></pre>
+<p>Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others.</p>
 </div>
 <div id="conclusions" class="section level1">
 <h1>Conclusions</h1>
