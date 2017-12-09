@@ -1,0 +1,28 @@
+ENVI
+description = {
+  Maximum Likelihood Classification Result [Sat Dec 02 16:11:44 2017]}
+samples = 4991
+lines   = 2926
+bands   = 1
+header offset = 0
+file type = ENVI Classification
+data type = 1
+interleave = bsq
+sensor type = Unknown
+classes = 6
+class lookup = {
+   0,   0,   0,   0, 255, 255, 255, 255,   0,   0,   0, 255,   0, 255,   0,
+ 255,   0,   0}
+class names = {
+ Unclassified, Urban [Cyan] 516 points, Agriculture [Yellow] 2239 points, 
+ Water [Blue] 16979 points, Forest [Green] 715 points, 
+ Bare Land [Red] 4836 points}
+byte order = 0
+x start = 1848
+y start = 4162
+map info = {UTM, 1.000, 1.000, 270195.000, 4767285.000, 3.0000000000e+001, 3.0000000000e+001, 18, North, WGS-84, units=Meters}
+coordinate system string = {PROJCS["UTM_Zone_18N",GEOGCS["GCS_WGS_1984",DATUM["D_WGS_1984",SPHEROID["WGS_1984",6378137.0,298.257223563]],PRIMEM["Greenwich",0.0],UNIT["Degree",0.0174532925199433]],PROJECTION["Transverse_Mercator"],PARAMETER["False_Easting",500000.0],PARAMETER["False_Northing",0.0],PARAMETER["Central_Meridian",-75.0],PARAMETER["Scale_Factor",0.9996],PARAMETER["Latitude_Of_Origin",0.0],UNIT["Meter",1.0]]}
+wavelength units = Unknown
+band names = {
+ Max Like (23Apr17_ROI)}
+image quality = 9
