@@ -46,6 +46,7 @@ library(XML)
 library(RArcInfo)
 library(imager)
 library(sf)
+library(gridExtra)
 datadir='C:/Users/gills/Desktop/Geo503_R/FinalProjectR/RDataScience_Project/data'
 USA=getData('GADM',country='USA',level=0,path=datadir)
 dem_FL=getData('alt',country='USA',lat=42.72,lon=-77.05,path=datadir,download=T)
@@ -72,7 +73,7 @@ Once GRASS helps us identify watershed boundaries, however, we'll need a land us
 
 
 # Results
-
+# Basic Terrain Analysis
 ```{r, warning=F, message=F, fig.cap='DEM for Finger Lakes Region'}
 
 plot(dem_roi)
@@ -88,7 +89,7 @@ The above plot demonstrates how the slope changes throughout the region of inter
 
 plot(Aspect)
 ```
-The above plot demonstrates the aspect of the land in the Finger Lakes Region. Since aspect informs about the compass direction any given slope faces, understanding the aspect of the terrain is also an important cosideration in trying to understand how water might move through the watershed.
+The above plot demonstrates the aspect of the land in the Finger Lakes Region. Since aspect informs about the compass direction any given slope faces, understanding the aspect of the terrain is also an important consideration in trying to understand how water might move through the watershed.
 ```{r, warning=F, message=F, fig.cap='Flow Direction for Finger Lakes Region'}
 
 plot(FlowDir)
@@ -102,11 +103,12 @@ West : 2^4 = 16
 Northwest : 2^5 = 32
 North : 2^6 = 64
 Northeast : 2^7 = 128
-```{r, fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
+## Loading Watershed BOundaries into R from GRASS
+```{r, warning=F,message=F,fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
 watersheds=readOGR(dsn='FL_polygons.shp')
 plot(watersheds)
 ```
-Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS's watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS Gui in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above.
+Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS's watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS GUI in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above.
 
 ```{r, warning=F, message=F,fig.cap="Overlaying Watershed Boundaries over DEM"}
 watersheds_proj=readOGR(dsn='data/FL_polygons.shp')
@@ -118,13 +120,14 @@ plot(watersheds_proj, add=T)
 Here, we can see how the watershed boundaries fit nicely onto the DEM from earlier in a way that makes sense visually. Boundaries fall on what appear to be local high points between the lakes.
 
 The reluctance of R to be useful in the watershed delineation process, however, turned out to be useful. Instead of the focus of this project being on watershed delineation, we can take it a step further in order to understand more about the land use within the watersheds.
+## Land Use Classification Data via Analysis of Landsat 8 Image
 ```{r, warning=F, message=F,fig.cap="Land Use Classification derived from a Landsat 8 OLI Image from April 23, 2017"}
 landuse=raster(x='data/Class2017_2')
 plot(landuse)
 conf_mat=load.image(file = 'data/accuracy.jpg')
 plot(conf_mat)
 ```
-The above map was created by me in ENVI for another class. I used an image from Landsat 8 OLI on April 23, 2017. The image was downloaded from USGS's National Map. The image was preprocessed and then a supervised classification was run on the image. In the classification map above, various colors represent different types of land use. In the above image, the colors signify:
+The above map was created by me in ENVI. I used an image from Landsat 8 OLI captured on April 23, 2017 that was downloaded from USGS's National Map. The image was preprocessed and then a supervised classification was run on the image. In the classification map above, various colors represent different types of land use. In the above image, the colors signify:
 Yellow - Agriculture
 Green - Forest
 Red - Bare Land
@@ -134,12 +137,12 @@ Light blue - Urban
 While this land use map is in no way perfect, validation of the classification did indicate a high accuracy of classification. Using training samples collected from higher spatial resolution imagery, a confusion matrix was constructed and demonstrates an overall accuracy of 98.246%. This lends some confidence to the classification results, supporting its usefulness in the watershed analysis.
 
 Now that we have both a watershed shapefile and a land use map, we can do some interesting overlay analysis.
-
+## Watershed / Land Use Overlay Analysis
 ```{r, warning=F, message=F,fig.cap="Overlaying Watershed Boundaries over Land Use Classification Map"}
 plot(landuse)
 plot(watersheds_proj, add=T)
 ```
-In the above map, we can see how the land use varies between watersheds. There is clearly and issue at the bottom of the land use map where the boundary of the original landsat image did not extend to the full reach of two of the central Finger Lakes. This should and will be addressed in future land use classification analysis by overlaying two adjacent landsat images.
+In the above map, we can see how the land use varies between watersheds. There is clearly and issue at the bottom of the land use map where the boundary of the original Landsat image did not extend to the full reach of two of the central Finger Lakes. This should and will be addressed in future land use classification analysis by overlaying two adjacent Landsat images.
 
 For the purposes of this project, however, we can still do our analysis, simply keeping in mind that the information we have for lakes 5 and 6, Keuka Lake and Seneca Lake, are incomplete.
 
@@ -167,6 +170,8 @@ plot(seneca,main='Seneca Lake Watershed')
 plot(keuka,main='Keuka Lake Watershed')
 plot(canadice,main='Canadice Lake Watershed')
 plot(hemlock,main='Hemlock Lake Watershed')
+par(mfrow=c(3,4))
+
 ```
 In the above, we break the multipolygon representing the watersheds into separate polygons for each lake's watershed. This will make it simpler to analyze land use within each separate watershed.
 
@@ -204,7 +209,7 @@ mask_canadice=mask(landuse_canadice,canadice)
 #Hemlock Lake
 landuse_hemlock=crop(landuse, hemlock)
 mask_hemlock=mask(landuse_hemlock,hemlock)
-par(mfrow=c(3,4))
+
 #Plotting all 11 watershed/landuse overlays
 plot(mask_conesus,main='Conesus Watershed Land Use')
 plot(mask_otisco,main='Otisco Watershed Land Use')
@@ -217,6 +222,7 @@ plot(mask_seneca,main='Seneca Watershed Land Use')
 plot(mask_keuka,main='Keuka Watershed Land Use')
 plot(mask_canadice,main='Canadice Watershed Land Use')
 plot(mask_hemlock,main='Hemlock Watershed Land Use')
+par(mfrow=c(3,4))
 ```
 Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others.
 ```{r, warning=F, message=F,}
