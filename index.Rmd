@@ -170,26 +170,26 @@ keuka_matrix=c(keuka_summary)
 canadice_matrix=c(canadice_summary)
 hemlock_matrix=c(hemlock_summary)
 lakes=c('Conesus','Otisco','Skaneateles','Honeoye','Canandaigua','Owasco','Cayuga','Seneca','Keuka','Canadice','Hemlock')
-table1=as.data.frame(rbind(conesus_matrix,otisco_matrix,skaneateles_matrix,honeoye_matrix,canandaigua_matrix,owasco_matrix,cayuga_matrix,seneca_matrix,keuka_matrix,canadice_matrix,hemlock_matrix))
-row.names(table1)=c(lakes)
-colnames(table1)=c('Urban','Agriculture','Water','Forest','Bare')
-table1$sum_pixels=c(rowSums(table1))
-table1$U_prop=c(table1$Urban/table1$sum_pixels)
-table1$U_prop=round(table1$U_prop,2)
-table1$A_prop=c(table1$Agriculture/table1$sum_pixels)
-table1$A_prop=round(table1$A_prop,2)
-table1$W_prop=c(table1$Water/table1$sum_pixels)
-table1$W_prop=round(table1$W_prop,2)
-table1$F_prop=c(table1$Forest/table1$sum_pixels)
-table1$F_prop=round(table1$F_prop,2)
-table1$B_prop=c(table1$Bare/table1$sum_pixels)
-table1$B_prop=round(table1$B_prop,2)
-table1$Urban=NULL
-table1$Agriculture=NULL
-table1$Water=NULL
-table1$Forest=NULL
-table1$Bare=NULL
-table1$sum_pixels=NULL
+FL_results=as.data.frame(rbind(conesus_matrix,otisco_matrix,skaneateles_matrix,honeoye_matrix,canandaigua_matrix,owasco_matrix,cayuga_matrix,seneca_matrix,keuka_matrix,canadice_matrix,hemlock_matrix))
+row.names(FL_results)=c(lakes)
+colnames(FL_results)=c('Urban','Agriculture','Water','Forest','Bare')
+FL_results$sum_pixels=c(rowSums(FL_results))
+FL_results$U_prop=c(FL_results$Urban/FL_results$sum_pixels)
+FL_results$U_prop=round(FL_results$U_prop,2)
+FL_results$A_prop=c(FL_results$Agriculture/FL_results$sum_pixels)
+FL_results$A_prop=round(FL_results$A_prop,2)
+FL_results$W_prop=c(FL_results$Water/FL_results$sum_pixels)
+FL_results$W_prop=round(FL_results$W_prop,2)
+FL_results$F_prop=c(FL_results$Forest/FL_results$sum_pixels)
+FL_results$F_prop=round(FL_results$F_prop,2)
+FL_results$B_prop=c(FL_results$Bare/FL_results$sum_pixels)
+FL_results$B_prop=round(FL_results$B_prop,2)
+FL_results$Urban=NULL
+FL_results$Agriculture=NULL
+FL_results$Water=NULL
+FL_results$Forest=NULL
+FL_results$Bare=NULL
+FL_results$sum_pixels=NULL
 conesus@data$Area
 otisco@data$Area
 skaneateles@data$Area
@@ -201,13 +201,13 @@ seneca@data$Area
 keuka@data$Area
 canadice@data$Area
 hemlock@data$Area
-table1$Wtshd_Area=c(181,177,206,178,489,542,2034,1432,367,45,112)
+FL_results$Wtshd_Area=c(181,177,206,178,489,542,2034,1432,367,45,112)
 #Lake Area measurements pulled from Google Search
-table1$Lake_Area=c(13.84,8.29,35.61,7.17,43.50,26.97,172.00,173.30,47.47,2.63,7.28)
-table1$LW_prop=table1$Lake_Area/table1$Wtshd_Area
-table1$LW_prop=round(table1$LW_prop,2)
+FL_results$Lake_Area=c(13.84,8.29,35.61,7.17,43.50,26.97,172.00,173.30,47.47,2.63,7.28)
+FL_results$LW_prop=FL_results$Lake_Area/FL_results$Wtshd_Area
+FL_results$LW_prop=round(FL_results$LW_prop,2)
 #Bloom weeks are the summed bloom weeks from each lake between 2012-2017
-table1$BlmWks=c(22,2,5,68,11,48,20,13,6,0,0)
+FL_results$BlmWks=c(22,2,5,68,11,48,20,13,6,0,0)
 ```
 Above, the data was moved around and manipulated in order to create a table summarizing the analysis results. The table summarizes each lake's land use makeup, watershed size, lake size, and cyanobacterial bloom frequency.
 
@@ -334,35 +334,35 @@ plot(mask_hemlock,main='Hemlock Watershed Land Use')
 Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others.
 ## Summary Table
 ```{r, warning=F, message=F,fig.cap="Summary Table of Land Use Data for All 11 Watersheds"}
-datatable(table1, options = list(pageLength = 6))
+datatable(FL_results, options = list(pageLength = 6))
 ```
 The table above summarizes the watershed data for each of the eleven Finger Lakes. For each lake, the data table shows the proportion of watershed made up by each land use type, the total watershed area in square kilometers, the total surface area of the lake in square kilometers, and the total number of weeks that each lake had recorded cyanobacterial blooms from 2012-2017. 
 ## Scatter Plots
 ```{r, warning=F, message=F,fig.cap="Looking for Relationships in the Data via Scatter Plots and Linear Regression Lines"}
 # Proportion of Watershed that is Urban vs. # weeks of recorded bloom
-plot(x = table1$U_prop,y = table1$BlmWks,main='Urban Watershed Proportion vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$U_prop), col="red")
+plot(x = FL_results$U_prop,y = FL_results$BlmWks,main='Urban Watershed Proportion vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$U_prop), col="red")
 # Proportion of Watershed that is Agricultural vs. # weeks of recorded bloom
-plot(x = table1$A_prop,y = table1$BlmWks,main='Agricultural Watershed Proportion vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$A_prop), col="red")
+plot(x = FL_results$A_prop,y = FL_results$BlmWks,main='Agricultural Watershed Proportion vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$A_prop), col="red")
 # Proportion of Watershed that is Water vs. # weeks of recorded bloom
-plot(x = table1$W_prop,y = table1$BlmWks,main='Water Watershed Proportion vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$W_prop), col="red")
+plot(x = FL_results$W_prop,y = FL_results$BlmWks,main='Water Watershed Proportion vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$W_prop), col="red")
 # Proportion of Watershed that is Forest vs. # weeks of recorded bloom
-plot(x = table1$F_prop,y = table1$BlmWks,main='Forest Watershed Proportion vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$F_prop), col="red")
+plot(x = FL_results$F_prop,y = FL_results$BlmWks,main='Forest Watershed Proportion vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$F_prop), col="red")
 # Proportion of Watershed that is Bare Land vs. # weeks of recorded bloom
-plot(x = table1$B_prop,y = table1$BlmWks,main='Bare Land Watershed Proportion vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$B_prop), col="red")
+plot(x = FL_results$B_prop,y = FL_results$BlmWks,main='Bare Land Watershed Proportion vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$B_prop), col="red")
 # Size of Watershed vs. # weeks of recorded bloom
-plot(x = table1$Wtshd_Area,y = table1$BlmWks,main='Watershed Size (km2) vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$Wtshd_Area), col="red")
+plot(x = FL_results$Wtshd_Area,y = FL_results$BlmWks,main='Watershed Size (km2) vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$Wtshd_Area), col="red")
 # Size of Lake vs. # weeks of recorded bloom
-plot(x = table1$Lake_Area,y = table1$BlmWks,main='Lake Surface Area (km2) vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$Lake_Area), col="red")
+plot(x = FL_results$Lake_Area,y = FL_results$BlmWks,main='Lake Surface Area (km2) vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$Lake_Area), col="red")
 # Ratio of Lake surface area to Watershed Area vs. # weeks of recorded bloom
-plot(x = table1$LW_prop,y = table1$BlmWks,main='Lake:Watershed Proportion vs. Bloom Weeks')
-abline(lm(table1$BlmWks~table1$LW_prop), col="red")
+plot(x = FL_results$LW_prop,y = FL_results$BlmWks,main='Lake:Watershed Proportion vs. Bloom Weeks')
+abline(lm(FL_results$BlmWks~FL_results$LW_prop), col="red")
 
 ```
 Based on the scatter plots and best fit linear regression lines, it appears that the hypotheses that were made do not hold much merit. It was hypothesized that lakes demonstrating more frequent cyanobacterial blooms would have higher agricultural and urban watershed proportions since agricultural and urban lands tend to encourage surface runoff of nutrient-rich waters. The scatter plots and linear regression lines, however, show little relationship between both urban percentage and agricultural percentage with total number of recorded bloom weeks.
