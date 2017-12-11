@@ -323,8 +323,8 @@ lakedata=read.table(file = &#39;data/BloomWks_2.csv&#39;,skip=1,sep=&#39;,&#39;,
 BlmWk17=c(8,0,0,14,4,6,5,10,10,5,2)
 lakedata2017=cbind(lakedata,BlmWk17)
 datatable(lakedata2017, options = list(pageLength = 6))</code></pre>
-<p><div id="htmlwidget-a6b89a2564af851bda47" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-a6b89a2564af851bda47">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":[],"jsHooks":[]}</script> From this table, we can clearly see that some of the Finger Lakes experience more weeks of bloom than other lakes. We can also clearly see that many of the lakes never had recorded blooms actually experienced recorded blooms in 2017, a troubling sign.</p>
+<p><div id="htmlwidget-5b880dc51a2c26ecc1a5" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-5b880dc51a2c26ecc1a5">{"x":{"filter":"none","data":[["1","2","3","4","5","6","7","8","9","10","11"],["Conesus","Hemlock","Canadice","Honeoye","Canandaigua","Keuka","Seneca","Cayuga","Owasco","Skaneateles","Otisco"],[0,0,0,12,0,0,0,0,1,0,0],[0,0,0,18,0,0,0,0,7,0,0],[7,0,0,8,0,0,0,3,12,0,0],[3,0,0,7,4,0,6,0,9,0,0],[4,0,0,9,3,0,2,7,9,0,0],[8,0,0,14,4,6,5,10,10,5,2]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>Lake<\/th>\n      <th>BlmWk12<\/th>\n      <th>BlmWk13<\/th>\n      <th>BlmWk14<\/th>\n      <th>BlmWk15<\/th>\n      <th>BlmWk16<\/th>\n      <th>BlmWk17<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"columnDefs":[{"className":"dt-right","targets":[2,3,4,5,6,7]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":[],"jsHooks":[]}</script> From this table, we can clearly see that some of the Finger Lakes experience more weeks of bloom than other lakes. We can also clearly see that many of the lakes never had recorded blooms actually experienced recorded blooms in 2017, a troubling sign.</p>
 <p>These data beg a few questions: 1) if these lakes are so similar in geography, topography, and use, why are they impacted so disparately by cyanobacteria? 2) What might be the possible explanation for increasing bloom records across all lakes?</p>
 <p>For this project, we will seek to answer these questions by looking into land use. Specifically, this project will seek to quantify the proportion of each lake’s watershed that can be categorized as agricultural land. It is hypothesized that lakes wit higher proportions of agricultural and urban lands will have higher nutrient loads and will therefore face higher burdens of cyanobacterial bloom. In addition, if land use has changed or is changing, perhaps this could be an indication of why blooms are becoming more widespread across all lakes.</p>
 </div>
@@ -576,7 +576,10 @@ Flow Direction for Finger Lakes Region
 </p>
 </div>
 <p>This plot demonstrates the flow direction within the region of interest. The legend for this parameter goes up to 128. These legend values are not necessarily intuitive. To understand, think of water falling into a pixel. If the water does not stay in that pixel, it can go one of eight directions, to one of the eight surrounding pixels. Each pixel can be represented by a number. The numerical scale of the legend can then be understood as follows:</p>
-<p>East : 2^0 = 1 Southeast : 2^1 = 2 South : 2^2 = 4 Southwest : 2^3 = 8 West : 2^4 = 16 Northwest : 2^5 = 32 North : 2^6 = 64 Northeast : 2^7 = 128 ## Loading Watershed Boundaries into R from GRASS</p>
+<p>East : 2^0 = 1 Southeast : 2^1 = 2 South : 2^2 = 4 Southwest : 2^3 = 8 West : 2^4 = 16 Northwest : 2^5 = 32 North : 2^6 = 64 Northeast : 2^7 = 128</p>
+</div>
+<div id="loading-watershed-boundaries-into-r-from-grass" class="section level2">
+<h2>Loading Watershed Boundaries into R from GRASS</h2>
 <pre class="r"><code>plot(watersheds)</code></pre>
 <div class="figure">
 <img src="index_files/figure-html/unnamed-chunk-11-1.png" alt="Watershed Boundaries: Finger Lakes Region, NY" width="672" />
@@ -584,7 +587,10 @@ Flow Direction for Finger Lakes Region
 Watershed Boundaries: Finger Lakes Region, NY
 </p>
 </div>
-<p>Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS’s watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS GUI in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above. ## Overlaying Watershed Boundaries onto DEM</p>
+<p>Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS’s watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS GUI in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above.</p>
+</div>
+<div id="overlaying-watershed-boundaries-onto-dem" class="section level2">
+<h2>Overlaying Watershed Boundaries onto DEM</h2>
 <pre class="r"><code>DEM_proj=raster(x = &#39;data/dem_flr_proj.tif&#39;)
 DEM_proj_crop=crop(DEM_proj,extent(250000,420000,4650000,4800000),filename=file.path(datadir,&quot;DEM_crop.tif&quot;),overwrite=T)
 plot(DEM_proj_crop)
@@ -596,7 +602,10 @@ Overlaying Watershed Boundaries over DEM
 </p>
 </div>
 <p>Here, we can see how the watershed boundaries fit nicely onto the DEM from earlier in a way that makes sense visually. Boundaries fall on what appear to be local high points between the lakes.</p>
-<p>The reluctance of R to be useful in the watershed delineation process, however, turned out to be useful. Instead of the focus of this project being on watershed delineation, we can take it a step further in order to understand more about the land use within the watersheds. ## Land Use Classification Data via Analysis of Landsat 8 Image with Validation Information</p>
+<p>The reluctance of R to be useful in the watershed delineation process, however, turned out to be useful. Instead of the focus of this project being on watershed delineation, we can take it a step further in order to understand more about the land use within the watersheds.</p>
+</div>
+<div id="land-use-classification-data-via-analysis-of-landsat-8-image-with-validation-information" class="section level2">
+<h2>Land Use Classification Data via Analysis of Landsat 8 Image with Validation Information</h2>
 <pre class="r"><code>plot(landuse)</code></pre>
 <div class="figure">
 <img src="index_files/figure-html/unnamed-chunk-13-1.png" alt="Land Use Classification derived from a Landsat 8 OLI Image from April 23, 2017" width="672" />
@@ -639,9 +648,11 @@ Overlaying Watershed Boundaries over Land Use Classification Map
 </p>
 </div>
 <p>In the above map, we can see how the land use varies between watersheds. There is clearly and issue at the bottom of the land use map where the boundary of the original Landsat image did not extend to the full reach of two of the central Finger Lakes. This should and will be addressed in future land use classification analysis by overlaying two adjacent Landsat images.</p>
-<p>For the purposes of this project, however, we can still do our analysis, simply keeping in mind that the information we have for lakes 5 and 6, Keuka Lake and Seneca Lake, are incomplete. ## Plotting New Watershed Polygons for each of the 11 Finger Lakes</p>
-<pre class="r"><code>par(mfrow=c(3,4))
-plot(conesus, main=&#39;Conesus Lake Watershed&#39;)</code></pre>
+<p>For the purposes of this project, however, we can still do our analysis, simply keeping in mind that the information we have for lakes 5 and 6, Keuka Lake and Seneca Lake, are incomplete.</p>
+</div>
+<div id="plotting-new-watershed-polygons-for-each-of-the-11-finger-lakes" class="section level2">
+<h2>Plotting New Watershed Polygons for each of the 11 Finger Lakes</h2>
+<pre class="r"><code>plot(conesus, main=&#39;Conesus Lake Watershed&#39;)</code></pre>
 <div class="figure">
 <img src="index_files/figure-html/unnamed-chunk-15-1.png" alt="Separation of the Watersheds from Multipolygon" width="672" />
 <p class="caption">
@@ -718,7 +729,6 @@ Separation of the Watersheds from Multipolygon
 Separation of the Watersheds from Multipolygon
 </p>
 </div>
-<pre class="r"><code>par(mfrow=c(3,4))</code></pre>
 <p>In the above, we show the separated multipolygon as 11 new polygons representing the watersheds of each individual lake. ## Plotting Land Use Maps for each of the 11 Finger Lakes</p>
 <pre class="r"><code>#Plotting all 11 watershed land use clips
 plot(mask_conesus,main=&#39;Conesus Watershed Land Use&#39;)</code></pre>
@@ -742,16 +752,22 @@ plot(mask_conesus,main=&#39;Conesus Watershed Land Use&#39;)</code></pre>
 <pre class="r"><code>plot(mask_canadice,main=&#39;Canadice Watershed Land Use&#39;)</code></pre>
 <p><img src="index_files/figure-html/unnamed-chunk-16-19.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-16-20.png" width="672" /></p>
 <pre class="r"><code>plot(mask_hemlock,main=&#39;Hemlock Watershed Land Use&#39;)</code></pre>
-<p><img src="index_files/figure-html/unnamed-chunk-16-21.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-16-22.png" width="672" /> Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others. ## Summary Table</p>
+<p><img src="index_files/figure-html/unnamed-chunk-16-21.png" width="672" /><img src="index_files/figure-html/unnamed-chunk-16-22.png" width="672" /> Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others.</p>
+</div>
+<div id="summary-table" class="section level2">
+<h2>Summary Table</h2>
 <pre class="r"><code>datatable(FL_results, options = list(pageLength = 6))</code></pre>
 <div class="figure">
-<div id="htmlwidget-dd94b2d68286a22fc55d" style="width:100%;height:auto;" class="datatables html-widget"></div>
-<script type="application/json" data-for="htmlwidget-dd94b2d68286a22fc55d">{"x":{"filter":"none","data":[["Conesus","Otisco","Skaneateles","Honeoye","Canandaigua","Owasco","Cayuga","Seneca","Keuka","Canadice","Hemlock"],[0.16,0.09,0.08,0.1,0.13,0.09,0.11,0.17,0.11,0.07,0.1],[0.41,0.5,0.39,0.25,0.38,0.49,0.5,0.43,0.36,0.16,0.26],[0.07,0.05,0.17,0.04,0.08,0.05,0.08,0.12,0.12,0.06,0.06],[0.04,0.08,0.1,0.1,0.07,0.1,0.11,0.09,0.17,0.19,0.17],[0.32,0.29,0.26,0.5,0.33,0.27,0.2,0.18,0.24,0.53,0.41],[181,177,206,178,489,542,2034,1432,367,45,112],[13.84,8.29,35.61,7.17,43.5,26.97,172,173.3,47.47,2.63,7.28],[0.08,0.05,0.17,0.04,0.09,0.05,0.08,0.12,0.13,0.06,0.06],[22,2,5,68,11,48,20,13,6,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>U_prop<\/th>\n      <th>A_prop<\/th>\n      <th>W_prop<\/th>\n      <th>F_prop<\/th>\n      <th>B_prop<\/th>\n      <th>Wtshd_Area<\/th>\n      <th>Lake_Area<\/th>\n      <th>LW_prop<\/th>\n      <th>BlmWks<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
+<div id="htmlwidget-33b65b0b18977cdc693c" style="width:100%;height:auto;" class="datatables html-widget"></div>
+<script type="application/json" data-for="htmlwidget-33b65b0b18977cdc693c">{"x":{"filter":"none","data":[["Conesus","Otisco","Skaneateles","Honeoye","Canandaigua","Owasco","Cayuga","Seneca","Keuka","Canadice","Hemlock"],[0.16,0.09,0.08,0.1,0.13,0.09,0.11,0.17,0.11,0.07,0.1],[0.41,0.5,0.39,0.25,0.38,0.49,0.5,0.43,0.36,0.16,0.26],[0.07,0.05,0.17,0.04,0.08,0.05,0.08,0.12,0.12,0.06,0.06],[0.04,0.08,0.1,0.1,0.07,0.1,0.11,0.09,0.17,0.19,0.17],[0.32,0.29,0.26,0.5,0.33,0.27,0.2,0.18,0.24,0.53,0.41],[181,177,206,178,489,542,2034,1432,367,45,112],[13.84,8.29,35.61,7.17,43.5,26.97,172,173.3,47.47,2.63,7.28],[0.08,0.05,0.17,0.04,0.09,0.05,0.08,0.12,0.13,0.06,0.06],[22,2,5,68,11,48,20,13,6,0,0]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>U_prop<\/th>\n      <th>A_prop<\/th>\n      <th>W_prop<\/th>\n      <th>F_prop<\/th>\n      <th>B_prop<\/th>\n      <th>Wtshd_Area<\/th>\n      <th>Lake_Area<\/th>\n      <th>LW_prop<\/th>\n      <th>BlmWks<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"pageLength":6,"columnDefs":[{"className":"dt-right","targets":[1,2,3,4,5,6,7,8,9]},{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false,"lengthMenu":[6,10,25,50,100]}},"evals":[],"jsHooks":[]}</script>
 <p class="caption">
 Summary Table of Land Use Data for All 11 Watersheds
 </p>
 </div>
-<p>The table above summarizes the watershed data for each of the eleven Finger Lakes. For each lake, the data table shows the proportion of watershed made up by each land use type, the total watershed area in square kilometers, the total surface area of the lake in square kilometers, and the total number of weeks that each lake had recorded cyanobacterial blooms from 2012-2017. ## Scatter Plots</p>
+<p>The table above summarizes the watershed data for each of the eleven Finger Lakes. For each lake, the data table shows the proportion of watershed made up by each land use type, the total watershed area in square kilometers, the total surface area of the lake in square kilometers, and the total number of weeks that each lake had recorded cyanobacterial blooms from 2012-2017.</p>
+</div>
+<div id="scatter-plots" class="section level2">
+<h2>Scatter Plots</h2>
 <pre class="r"><code># Proportion of Watershed that is Urban vs. # weeks of recorded bloom
 plot(x = FL_results$U_prop,y = FL_results$BlmWks,main=&#39;Urban Watershed Proportion vs. Bloom Weeks&#39;)
 abline(lm(FL_results$BlmWks~FL_results$U_prop), col=&quot;red&quot;)</code></pre>
@@ -826,12 +842,16 @@ Looking for Relationships in the Data via Scatter Plots and Linear Regression Li
 </div>
 <p>Based on the scatter plots and best fit linear regression lines, it appears that the hypotheses that were made do not hold much merit. It was hypothesized that lakes demonstrating more frequent cyanobacterial blooms would have higher agricultural and urban watershed proportions since agricultural and urban lands tend to encourage surface runoff of nutrient-rich waters. The scatter plots and linear regression lines, however, show little relationship between both urban percentage and agricultural percentage with total number of recorded bloom weeks.</p>
 <p>That is not to say, however, that no relationships were found. Interestingly, the scatter plot and linear regression line relating percent forested land to number of bloom weeks suggests that as the proportion of watershed that is forested increases, bloom frequency tends to decrease.</p>
-<p>In addition, the scatter plots and linear regression lines suggest that as the proportion of watershed that is made up of water increases, bloom frequency tends to decrease. Similarly, the relationships between Lake:Watershed proportion and frequency of blooms demonstrates the same trend– small lakes with large watersheds tend to have higher bloom frequencies than large lakes in small watersheds. All other relationships do not appear to be significant. # Conclusions The original hypothesis for this study was that lakes with more frequent cyanobacterial blooms would likely have higher proportions of agricultural and urban land than lakes with less frequent cyanobacterial blooms. The idea behind this hypothesis is that cyanobacteria thrive in nutrient-rich waters, and nutrients largely runoff from agricultural lands and impervious surfaces. This hypothesis, however, is not supported by this study.</p>
+<p>In addition, the scatter plots and linear regression lines suggest that as the proportion of watershed that is made up of water increases, bloom frequency tends to decrease. Similarly, the relationships between Lake:Watershed proportion and frequency of blooms demonstrates the same trend– small lakes with large watersheds tend to have higher bloom frequencies than large lakes in small watersheds. All other relationships do not appear to be significant.</p>
+</div>
+</div>
+<div id="conclusions" class="section level1">
+<h1>Conclusions</h1>
+<p>The original hypothesis for this study was that lakes with more frequent cyanobacterial blooms would likely have higher proportions of agricultural and urban land than lakes with less frequent cyanobacterial blooms. The idea behind this hypothesis is that cyanobacteria thrive in nutrient-rich waters, and nutrients largely runoff from agricultural lands and impervious surfaces. This hypothesis, however, is not supported by this study.</p>
 <p>Interestingly, there was little to no relationship between the proportion of agricultural land or urban land in the watershed and the frequency of cyanobacterial blooms. It should be noted, however, that the data set on which the relationships are based is limited, based on only 11 lakes, so larger relationships may be missed in this analysis.</p>
 <p>Still, some useful knowledge was gained from this study. While there was no relationship between agriculture or urban lands on cyanobacterial blooms, there were some relationships found. One of those relationships is between bloom frequency and the proportion of watershed that is forested. The linear regression best fit line suggested that as a watershed becomes more forested, cyanobacterial blooms becomes less frequent. This makes sense when one takes into account the role of trees in sequestering nutrients and pollution, facilitating rainwater infiltration, and slowing surface run off (USFS, 2013). A healthy watershed needs trees, so it makes sense that having fewer trees would have a negative impact on water quality.</p>
 <p>Furthermore, a relationship was found between the proportion of watershed covered by water and the frequency of cyanobacterial blooms. This relationship is basically synonymous to the relationship observed between cyanobacterial bloom frequency and the proportion of Lake size to Watershed Size. Basically, the larger a watershed is in comparison to the size of the lake into which it drains, the more likely that lake is to see cyanobacteria growth. Logically, this makes sense. If a huge watershed is draining into a relatively small lake, nutrients become highly concentrated once they reach the lake and thus are available for the cyanobacteria to utilize. In contrast, if a small watershed is draining into relatively a large lake, the nutrients can become somewhat more diluted in comparison.</p>
 <p>This relationship between Lake Size to Watershed Size and cyanobacterial frequency is probably the most interesting and significant. Further research should be done on the topic, including more lakes in the analysis in order to see if the relationship holds true with more data. The downside to this revelation, however, is that there is little that can be done in order to mitigate issues related to cyanobacteria in certain lakes. Beyond reforesting their watersheds, nothing can be done about adjusting the size of the lakes or watersheds. Lakes with high cyanobacterial bloom frequency, then, will likely continue to see high cyanobacterial bloom frequencies.</p>
-</div>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
