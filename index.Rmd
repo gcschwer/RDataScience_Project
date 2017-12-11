@@ -65,12 +65,14 @@ Aspect=terrain(x=dem_roi,opt='aspect',unit='degrees',neighbors=8)
 
 These calculations within R have given us a good idea of how the terrain behaves in the Finger Lakes Region and thus where we'd expect water to flow. For the actual watershed delineation, however, we'll turn it over to GRASS!
 
-Once GRASS helps us identify watershed boundaries, however, we'll need a land use map for the Finger Lakes Region. This can be found freely online through the National Land Cover Database (NLCD) or you can create a land use map of your own using remote sensing software such as ENVI and freely downloadable Landsat imagery from USGS' Earth Explorer or GloVis interfaces. Since I did this for another class, I'll bring in my own work here and we can do a data overlay to calculate land use proportions for each lake. My land use map was dervied from a Landsat 8 OLI image that was captured on April 23, 2017. The image was preprocessed and classified within ENVI software.
+Once GRASS helps us identify watershed boundaries, however, we'll need a land use map for the Finger Lakes Region. This can be found freely online through the National Land Cover Database (NLCD) or you can create a land use map of your own using remote sensing software such as ENVI and freely downloadable Landsat imagery from USGS' Earth Explorer or GloVis interfaces. Since I did this for another class, I'll bring in my own work here and we can do a data overlay to calculate land use proportions for each lake. My land use map was derived from a Landsat 8 OLI image that was captured on April 23, 2017. The image was preprocessed and classified within ENVI software.
 
 After pulling in our watershed shapefile and our land use classification for the region, R will help us perform overlay analysis in order to pull information and knowledge out of the once raw data. First, we'll need to break up the watershed multipolygon shapefile into separate polygons representing each separate lake watershed. This will make it simpler to analyze land use within each separate watershed.
 
 ## Separating the Watershed in to sub-watersheds
 ```{r, warning=F, message=F, fig.cap='Breaking the watersheds multipolygon into Separate watershed polygons'}
+watersheds=readOGR(dsn='FL_polygons.shp')
+watersheds_proj=readOGR(dsn='data/FL_polygons.shp')
 conesus=watersheds_proj[watersheds_proj$Name=='Conesus',]
 otisco=watersheds_proj[watersheds_proj$Name=='Otisco',]
 skaneateles=watersheds_proj[watersheds_proj$Name=='Skaneateles',]
@@ -84,8 +86,9 @@ canadice=watersheds_proj[watersheds_proj$Name=='Canadice',]
 hemlock=watersheds_proj[watersheds_proj$Name=='Hemlock',]
 ```
 ## Clipping Land Use Raster by Watershed Boundaries
-Next, we'll need to clip our land use raster image 11 times using the 11 separate waterhed polygons. This will enable us to visualize the land use separately for each waterhed and analyze the data of each watershed separately.
+Next, we'll need to clip our land use raster image 11 times using the 11 separate watershed polygons. This will enable us to visualize the land use separately for each watershed and analyze the data of each watershed separately.
 ```{r, warning=F, message=F, fig.cap='Cropping DEM by Watershed Polygons to Plot and Extract Data'}
+landuse=raster(x='data/Class2017_2')
 # Conesus Lake
 landuse_conesus=crop(landuse, conesus)
 mask_conesus=mask(landuse_conesus,conesus)
@@ -257,13 +260,11 @@ North : 2^6 = 64
 Northeast : 2^7 = 128
 ## Loading Watershed Boundaries into R from GRASS
 ```{r, warning=F,message=F,fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
-watersheds=readOGR(dsn='FL_polygons.shp')
 plot(watersheds)
 ```
 Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS's watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS GUI in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above.
 ## Overlaying Watershed Boundaries onto DEM
 ```{r, warning=F, message=F,fig.cap="Overlaying Watershed Boundaries over DEM"}
-watersheds_proj=readOGR(dsn='data/FL_polygons.shp')
 DEM_proj=raster(x = 'data/dem_flr_proj.tif')
 DEM_proj_crop=crop(DEM_proj,extent(250000,420000,4650000,4800000),filename=file.path(datadir,"DEM_crop.tif"),overwrite=T)
 plot(DEM_proj_crop)
@@ -274,7 +275,6 @@ Here, we can see how the watershed boundaries fit nicely onto the DEM from earli
 The reluctance of R to be useful in the watershed delineation process, however, turned out to be useful. Instead of the focus of this project being on watershed delineation, we can take it a step further in order to understand more about the land use within the watersheds.
 ## Land Use Classification Data via Analysis of Landsat 8 Image with Validation Information
 ```{r, warning=F, message=F,fig.cap="Land Use Classification derived from a Landsat 8 OLI Image from April 23, 2017"}
-landuse=raster(x='data/Class2017_2')
 plot(landuse)
 conf_mat=load.image(file = 'data/accuracy.jpg')
 plot(conf_mat)
@@ -336,7 +336,7 @@ Above, we can see the land use classification map of each separate watershed. It
 ```{r, warning=F, message=F,fig.cap="Summary Table of Land Use Data for All 11 Watersheds"}
 datatable(table1, options = list(pageLength = 6))
 ```
-The table above sumarizes the watershed data for each of the eleven Finger Lakes. For each lake, the data table shows the proportion of watershed made up by each land use type, the total watershed area in square kilometers, the total surface area of the lake in square kilometers, and the total number of weeks that each lake had recorded cyanobacterial blooms from 2012-2017. 
+The table above summarizes the watershed data for each of the eleven Finger Lakes. For each lake, the data table shows the proportion of watershed made up by each land use type, the total watershed area in square kilometers, the total surface area of the lake in square kilometers, and the total number of weeks that each lake had recorded cyanobacterial blooms from 2012-2017. 
 ## Scatter Plots
 ```{r, warning=F, message=F,fig.cap="Looking for Relationships in the Data via Scatter Plots and Linear Regression Lines"}
 # Proportion of Watershed that is Urban vs. # weeks of recorded bloom
@@ -365,11 +365,11 @@ plot(x = table1$LW_prop,y = table1$BlmWks,main='Lake:Watershed Proportion vs. Bl
 abline(lm(table1$BlmWks~table1$LW_prop), col="red")
 
 ```
-Based on the scatter plots and best fit linear regression lines, it appears that the hypotheses that were made do not hold much merit. It was hypothesized that lakes demonstrating more frequent cyanobacterial blooms would have higher agricultural and urban watershed proportions since agricultral and urban lands tend to encourage surface runoff of nutrient-rich waters. The scatterplots and linear regression lines, however, show little relationship between both urban percentage and agricultural percentage with total number of recorded bloom weeks.
+Based on the scatter plots and best fit linear regression lines, it appears that the hypotheses that were made do not hold much merit. It was hypothesized that lakes demonstrating more frequent cyanobacterial blooms would have higher agricultural and urban watershed proportions since agricultural and urban lands tend to encourage surface runoff of nutrient-rich waters. The scatter plots and linear regression lines, however, show little relationship between both urban percentage and agricultural percentage with total number of recorded bloom weeks.
 
 That is not to say, however, that no relationships were found. Interestingly, the scatter plot and linear regression line relating percent forested land to number of bloom weeks suggests that as the proportion of watershed that is forested increases, bloom frequency tends to decrease.
 
-In addition, the scatter plots and linear regression lines suggest that as the proportion of watershed that is made up of water increases, bloom frequency tends to decrease. Similarly, the relationships between Lake:Watershed proprtion and frequency of blooms demonstrates the same trend-- small lakes with large watersheds tend to have higher bloom frequencies than large lakes in small watersheds.
+In addition, the scatter plots and linear regression lines suggest that as the proportion of watershed that is made up of water increases, bloom frequency tends to decrease. Similarly, the relationships between Lake:Watershed proportion and frequency of blooms demonstrates the same trend-- small lakes with large watersheds tend to have higher bloom frequencies than large lakes in small watersheds.
 All other relationships do not appear to be significant.
 # Conclusions
 The original hypothesis for this study was that lakes with more frequent cyanobacterial blooms would likely have higher proportions of agricultural and urban land than lakes with less frequent cyanobacterial blooms. The idea behind this hypothesis is that cyanobacteria thrive in nutrient-rich waters, and nutrients largely runoff from agricultural lands and impervious surfaces. This hypothesis, however, is not supported by this study.
@@ -378,7 +378,7 @@ Interestingly, there was little to no relationship between the proportion of agr
 
 Still, some useful knowledge was gained from this study. While there was no relationship between agriculture or urban lands on cyanobacterial blooms, there were some relationships found. One of those relationships is between bloom frequency and the proportion of watershed that is forested. The linear regression best fit line suggested that as a watershed becomes more forested, cyanobacterial blooms becomes less frequent. This makes sense when one takes into account the role of trees in sequestering nutrients and pollution, facilitating rainwater infiltration, and slowing surface run off (USFS, 2013). A healthy watershed needs trees, so it makes sense that having fewer trees would have a negative impact on water quality.
 
-Furthermore, a relationship was found between the proportion of watershed covered by water and the frequency of cyanobacterial blooms. This relationship is basically synonymous to the relatioship observed between cyanobacterial bloom frequency and the proportion of Lake size to Watershed Size. Basically, the larger a watershed is in comparison to the size of the lake into which it drains, the more likely that lake is to see cyanobacteria growth. Logically, this makes sense. If a huge watershed is draining into a relatively small lake, nutrients become highly concentrated once they reach the lake and thus are available for the cyanobacteria to utilize. In contrast, if a small watershed is draining into relatively a large lake, the nutrients can become somewhat more diluted in comparison.
+Furthermore, a relationship was found between the proportion of watershed covered by water and the frequency of cyanobacterial blooms. This relationship is basically synonymous to the relationship observed between cyanobacterial bloom frequency and the proportion of Lake size to Watershed Size. Basically, the larger a watershed is in comparison to the size of the lake into which it drains, the more likely that lake is to see cyanobacteria growth. Logically, this makes sense. If a huge watershed is draining into a relatively small lake, nutrients become highly concentrated once they reach the lake and thus are available for the cyanobacteria to utilize. In contrast, if a small watershed is draining into relatively a large lake, the nutrients can become somewhat more diluted in comparison.
 
 This relationship between Lake Size to Watershed Size and cyanobacterial frequency is probably the most interesting and significant. Further research should be done on the topic, including more lakes in the analysis in order to see if the relationship holds true with more data. The downside to this revelation, however, is that there is little that can be done in order to mitigate issues related to cyanobacteria in certain lakes. Beyond reforesting their watersheds, nothing can be done about adjusting the size of the lakes or watersheds. Lakes with high cyanobacterial bloom frequency, then, will likely continue to see high cyanobacterial bloom frequencies.
 
