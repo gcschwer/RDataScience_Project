@@ -210,7 +210,7 @@ mask_canadice=mask(landuse_canadice,canadice)
 landuse_hemlock=crop(landuse, hemlock)
 mask_hemlock=mask(landuse_hemlock,hemlock)
 
-#Plotting all 11 watershed/landuse overlays
+#Plotting all 11 watershed land use clips
 plot(mask_conesus,main='Conesus Watershed Land Use')
 plot(mask_otisco,main='Otisco Watershed Land Use')
 plot(mask_skaneateles,main='Skaneateles Watershed Land Use')
@@ -222,12 +222,99 @@ plot(mask_seneca,main='Seneca Watershed Land Use')
 plot(mask_keuka,main='Keuka Watershed Land Use')
 plot(mask_canadice,main='Canadice Watershed Land Use')
 plot(mask_hemlock,main='Hemlock Watershed Land Use')
-par(mfrow=c(3,4))
 ```
 Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others.
-```{r, warning=F, message=F,}
+While the land use maps clipped for each watershed are interesting to look at, let's access the data behind them.
 
+```{r, warning=F, message=F,fig.cap="Extracting Land Use Raster Data from within Watershed Boundaries"}
+#Conesus
+conesus_data=extract(landuse_conesus, watersheds_proj[watersheds_proj$Name == "Conesus",])
+conesus_summary=table(conesus_data)
+#Otisco
+otisco_data=extract(landuse_otisco, watersheds_proj[watersheds_proj$Name == "Otisco",])
+otisco_summary=table(otisco_data)
+#Skaneateles
+skaneateles_data=extract(landuse_skaneateles, watersheds_proj[watersheds_proj$Name == "Skaneateles",])
+skaneateles_summary=table(skaneateles_data)
+#Honeoye
+honeoye_data=extract(landuse_honeoye, watersheds_proj[watersheds_proj$Name == "Honeoye",])
+honeoye_summary=table(honeoye_data)
+#Canandaigua
+canandaigua_data=extract(landuse_canandaigua, watersheds_proj[watersheds_proj$Name == "Canandaigua",])
+canandaigua_summary=table(canandaigua_data)
+#Owasco
+owasco_data=extract(landuse_owasco, watersheds_proj[watersheds_proj$Name == "Owasco",])
+owasco_summary=table(owasco_data)
+#Cayuga
+cayuga_data=extract(landuse_cayuga, watersheds_proj[watersheds_proj$Name == "Cayuga",])
+cayuga_summary=table(cayuga_data)
+#Seneca
+seneca_data=extract(landuse_seneca, watersheds_proj[watersheds_proj$Name == "Seneca",])
+seneca_summary=table(seneca_data)
+#Keuka
+keuka_data=extract(landuse_keuka, watersheds_proj[watersheds_proj$Name == "Keuka",])
+keuka_summary=table(keuka_data)
+#Canadice
+canadice_data=extract(landuse_canadice, watersheds_proj[watersheds_proj$Name == "Canadice",])
+canadice_summary=table(canadice_data)
+#Hemlock
+hemlock_data=extract(landuse_hemlock, watersheds_proj[watersheds_proj$Name == "Hemlock",])
+hemlock_summary=table(hemlock_data)
 ```
+Above, the data behind the clipped land use maps for each watershed have been extracted into 11 summary tables. In each table, there is a count of how many pixels in each land use map are represented by each land use class. The classes are numbered 1-5 and represent Urban, Agriculture, Water, Forest, and Bare Land respectively. While it is useful to have 11 separate watershed land use summaries, it would be even more useful to put all of that summarized data into one table.
+
+```{r, warning=F, message=F,fig.cap="Summarizing Land Use Data for All 11 Watersheds"}
+conesus_matrix=c(conesus_summary)
+otisco_matrix=c(otisco_summary)
+skaneateles_matrix=c(skaneateles_summary)
+honeoye_matrix=c(honeoye_summary)
+canandaigua_matrix=c(canandaigua_summary)
+owasco_matrix=c(owasco_summary)
+cayuga_matrix=c(cayuga_summary)
+seneca_matrix=c(seneca_summary)
+keuka_matrix=c(keuka_summary)
+canadice_matrix=c(canadice_summary)
+hemlock_matrix=c(hemlock_summary)
+lakes=c('Conesus','Otisco','Skaneateles','Honeoye','Canandaigua','Owasco','Cayuga','Seneca','Keuka','Canadice','Hemlock')
+table1=as.data.frame(rbind(conesus_matrix,otisco_matrix,skaneateles_matrix,honeoye_matrix,canandaigua_matrix,owasco_matrix,cayuga_matrix,seneca_matrix,keuka_matrix,canadice_matrix,hemlock_matrix))
+row.names(table1)=c(lakes)
+colnames(table1)=c('Urban','Agriculture','Water','Forest','Bare')
+table1$Total=c(rowSums(table1))
+table1$U_prop=c(table1$Urban/table1$Total)
+table1$U_prop=round(table1$U_prop,2)
+table1$A_prop=c(table1$Agriculture/table1$Total)
+table1$A_prop=round(table1$A_prop,2)
+table1$W_prop=c(table1$Water/table1$Total)
+table1$W_prop=round(table1$W_prop,2)
+table1$F_prop=c(table1$Forest/table1$Total)
+table1$F_prop=round(table1$F_prop,2)
+table1$B_prop=c(table1$Bare/table1$Total)
+table1$B_prop=round(table1$B_prop,2)
+table1$Urban=NULL
+table1$Agriculture=NULL
+table1$Water=NULL
+table1$Forest=NULL
+table1$Bare=NULL
+table1$Total=NULL
+conesus@data$Area
+otisco@data$Area
+skaneateles@data$Area
+honeoye@data$Area
+canandaigua@data$Area
+owasco@data$Area
+cayuga@data$Area
+seneca@data$Area
+keuka@data$Area
+canadice@data$Area
+hemlock@data$Area
+table1$Wtshd_Area=c(181,177,206,178,489,542,2034,1432,367,45,112)
+#Lake Area measurements pulled from Google Search
+table1$Lake_Area=c(13.84,8.29,35.61,7.17,43.50,26.97,172.00,173.30,47.47,2.63,7.28)
+#Bloom weeks are the summed bloom weeks from each lake between 2012-2017
+table1$BlmWks=c(22,2,5,68,11,48,20,13,6,0,0)
+datatable(table1, options = list(pageLength = 5))
+```
+Above, the data was moved around and manipulated in order to create a table summarizing the analysis results. For each lake, the data table shows the proportion of watershed made up by each land use type, the total watershed area in square kilometers, the total surface area of the lake in square kilometers, and the total number of weeks that each lake had recorded cyanobacterial blooms from 2012-2017. With these data summarized into a table, it is possible to dig into it in order to look for statistical patterns. In this way, it might be possible to understand why the eleven lakes that are so close in proximity are affected so differently by cyanobacteria.
 # Conclusions
 
 What have you learned?  Are there any broader implications?
