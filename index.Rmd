@@ -157,7 +157,7 @@ hemlock_summary=table(hemlock_data)
 ```
 Above, the data behind the clipped land use maps for each watershed have been extracted into 11 summary tables. In each table, there is a count of how many pixels in each land use map are represented by each land use class. The classes are numbered 1-5 and represent Urban, Agriculture, Water, Forest, and Bare Land respectively. While it is useful to have 11 separate watershed land use summaries, it would be even more useful to put all of that summarized data into one table.
 ## Pulling Watershed-specific Land Use Data into Summary Table
-```{r, warning=F, message=F, fig.cap='Constructing a Summary Table for Each Lake's Watershed Data'}
+```{r, warning=F, message=F, fig.cap='Constructing a Summary Table for Each Lake Watershed Data'}
 conesus_matrix=c(conesus_summary)
 otisco_matrix=c(otisco_summary)
 skaneateles_matrix=c(skaneateles_summary)
