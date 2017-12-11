@@ -318,6 +318,7 @@ plot(canadice,main='Canadice Lake Watershed')
 plot(hemlock,main='Hemlock Lake Watershed')
 ```
 In the above, we show the separated multipolygon as 11 new polygons representing the watersheds of each individual lake. 
+
 ## Plotting Land Use Maps for each of the 11 Finger Lakes
 ```{r, warning=F, message=F}
 #Plotting all 11 watershed land use clips
