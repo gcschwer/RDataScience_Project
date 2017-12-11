@@ -258,11 +258,13 @@ West : 2^4 = 16
 Northwest : 2^5 = 32
 North : 2^6 = 64
 Northeast : 2^7 = 128
+
 ## Loading Watershed Boundaries into R from GRASS
 ```{r, warning=F,message=F,fig.cap="Watershed Boundaries: Finger Lakes Region, NY"}
 plot(watersheds)
 ```
 Originally, I had hoped to complete the entire watershed delineation within R using the rgrass7 package. This package theoretically calls on the GRASS software in order to utilize GRASS's watershed tools. The code seemed simple, and yet was very reluctant to work. Having some experience delineating watershed boundaries from within GRASS, I know that the process is not exactly straight forward even within GRASS itself, so it makes sense that it would not be using R as a proxy either. Instead, I worked within the GRASS GUI in order to produce watershed boundaries using the DEM data we already have. This watershed shapefile can be seen above.
+
 ## Overlaying Watershed Boundaries onto DEM
 ```{r, warning=F, message=F,fig.cap="Overlaying Watershed Boundaries over DEM"}
 DEM_proj=raster(x = 'data/dem_flr_proj.tif')
@@ -273,8 +275,10 @@ plot(watersheds_proj, add=T)
 Here, we can see how the watershed boundaries fit nicely onto the DEM from earlier in a way that makes sense visually. Boundaries fall on what appear to be local high points between the lakes.
 
 The reluctance of R to be useful in the watershed delineation process, however, turned out to be useful. Instead of the focus of this project being on watershed delineation, we can take it a step further in order to understand more about the land use within the watersheds.
+
 ## Land Use Classification Data via Analysis of Landsat 8 Image with Validation Information
 ```{r, warning=F, message=F,fig.cap="Land Use Classification derived from a Landsat 8 OLI Image from April 23, 2017"}
+
 plot(landuse)
 conf_mat=load.image(file = 'data/accuracy.jpg')
 plot(conf_mat)
@@ -291,16 +295,16 @@ While this land use map is in no way perfect, validation of the classification d
 
 ## Watershed / Land Use Overlay Analysis
 ```{r, warning=F, message=F,fig.cap="Overlaying Watershed Boundaries over Land Use Classification Map"}
+
 plot(landuse)
 plot(watersheds_proj, add=T)
 ```
 In the above map, we can see how the land use varies between watersheds. There is clearly and issue at the bottom of the land use map where the boundary of the original Landsat image did not extend to the full reach of two of the central Finger Lakes. This should and will be addressed in future land use classification analysis by overlaying two adjacent Landsat images.
 
 For the purposes of this project, however, we can still do our analysis, simply keeping in mind that the information we have for lakes 5 and 6, Keuka Lake and Seneca Lake, are incomplete.
+
 ## Plotting New Watershed Polygons for each of the 11 Finger Lakes
 ```{r, warning=F, message=F,fig.cap="Separation of the Watersheds from Multipolygon"}
-
-par(mfrow=c(3,4))
 plot(conesus, main='Conesus Lake Watershed')
 plot(otisco, main='Otisco Lake Watershed')
 plot(skaneateles, main='Skaneateles Lake Watershed')
@@ -312,8 +316,6 @@ plot(seneca,main='Seneca Lake Watershed')
 plot(keuka,main='Keuka Lake Watershed')
 plot(canadice,main='Canadice Lake Watershed')
 plot(hemlock,main='Hemlock Lake Watershed')
-par(mfrow=c(3,4))
-
 ```
 In the above, we show the separated multipolygon as 11 new polygons representing the watersheds of each individual lake. 
 ## Plotting Land Use Maps for each of the 11 Finger Lakes
@@ -332,13 +334,16 @@ plot(mask_canadice,main='Canadice Watershed Land Use')
 plot(mask_hemlock,main='Hemlock Watershed Land Use')
 ```
 Above, we can see the land use classification map of each separate watershed. It is clear simply by looking at them that some of the lakes have very different land use make ups than the others.
+
 ## Summary Table
 ```{r, warning=F, message=F,fig.cap="Summary Table of Land Use Data for All 11 Watersheds"}
 datatable(FL_results, options = list(pageLength = 6))
 ```
 The table above summarizes the watershed data for each of the eleven Finger Lakes. For each lake, the data table shows the proportion of watershed made up by each land use type, the total watershed area in square kilometers, the total surface area of the lake in square kilometers, and the total number of weeks that each lake had recorded cyanobacterial blooms from 2012-2017. 
+
 ## Scatter Plots
 ```{r, warning=F, message=F,fig.cap="Looking for Relationships in the Data via Scatter Plots and Linear Regression Lines"}
+
 # Proportion of Watershed that is Urban vs. # weeks of recorded bloom
 plot(x = FL_results$U_prop,y = FL_results$BlmWks,main='Urban Watershed Proportion vs. Bloom Weeks')
 abline(lm(FL_results$BlmWks~FL_results$U_prop), col="red")
@@ -371,6 +376,7 @@ That is not to say, however, that no relationships were found. Interestingly, th
 
 In addition, the scatter plots and linear regression lines suggest that as the proportion of watershed that is made up of water increases, bloom frequency tends to decrease. Similarly, the relationships between Lake:Watershed proportion and frequency of blooms demonstrates the same trend-- small lakes with large watersheds tend to have higher bloom frequencies than large lakes in small watersheds.
 All other relationships do not appear to be significant.
+
 # Conclusions
 The original hypothesis for this study was that lakes with more frequent cyanobacterial blooms would likely have higher proportions of agricultural and urban land than lakes with less frequent cyanobacterial blooms. The idea behind this hypothesis is that cyanobacteria thrive in nutrient-rich waters, and nutrients largely runoff from agricultural lands and impervious surfaces. This hypothesis, however, is not supported by this study.
 
